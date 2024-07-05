@@ -88,3 +88,19 @@ console.log(str.includes('hello'))//true
 // 4.箭头函数解构,可读性差不建议使用
 var helloName = ({ name }) => console.log('hello,' + person.name)
 helloName(person)
+
+console.log('链判断----------')
+var data = null;
+// 错误写法会报错 TypeError: Cannot read properties of null (reading 'user')
+// let firstname = data.user.firstname || 'default';
+// 旧式正确写法
+var data = {
+    user: {
+        firstname: '张三'
+    }
+}
+let firstname = (data && data.user && data.user.firstname) || 'default';
+console.log(firstname)
+// 这样的层层判断非常麻烦，因此 ES2020 引入了“链判断运算符”,简化写法
+firstname = data?.user?.firstname || 'default';
+console.log(firstname)

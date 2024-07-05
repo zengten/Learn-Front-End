@@ -134,6 +134,24 @@ helloName(person)//hello,张三
 ```
 
 
+### 链判断
+使用链判断运算符，简化空对象检查
+```javascript
+var data = null;
+// 错误写法会报错 TypeError: Cannot read properties of null (reading 'user')
+// let firstname = data.user.firstname || 'default';
+// 旧式正确写法
+var data = {
+    user: {
+        firstname: '张三'
+    }
+}
+let firstname = (data && data.user && data.user.firstname) || 'default';
+console.log(firstname)
+// 这样的层层判断非常麻烦，因此 ES2020 引入了“链判断运算符”,简化写法
+firstname = data?.user?.firstname || 'default';
+console.log(firstname)
+```
 
 ### 箭头函数
 
