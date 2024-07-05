@@ -153,6 +153,24 @@ firstname = data?.user?.firstname || 'default';
 console.log(firstname)
 ```
 
+### 参数默认值
+可以给方法的参数设定默认值，不用在方法体内设定
+```javascript
+// 在 ES6 以前，我们无法给一个函数参数设置默认值，只能采用变通写法：
+function add1(a, b) {
+    // 判断 b 是否为空，为空就给默认值 1
+    b = b || 1;
+    return a + b;
+}
+console.log(add1(1, 2)) // 3
+console.log(add1(1)) // 2
+// 现在可以这么写：直接给参数写上默认值，没传就会自动使用默认值
+function add2(a, b = 2) {
+    return a + b;
+}
+console.log(add2(1)) // 3
+```
+
 ### 箭头函数
 
 示例1：箭头函数
@@ -204,6 +222,17 @@ function fun(...values) {
 console.log(fun(1, 2, 3))//3
 ```
 
+### 模板字符串
+使用模板字符串拼接数据
+```javascript
+// 旧写法
+let str1 = "你好，我的名字是："+ userName +"，年龄是：" + age + ", 语言是：" + language;
+console.log(str1);
+// 使用模板字符串写法
+let str2 = `你好，我的名字是：${userName}，年龄是：${age}，语言是：${language}`
+console.log(str2);
+```
+
 ### 对象优化
 
 - Object相关api
@@ -218,6 +247,10 @@ const person = {
 console.log(Object.keys(person))//输出所有key
 console.log(Object.values(person))//输出所有value
 console.log(Object.entries(person))//输出所有entry
+// 遍历person数据
+Object.entries(person).forEach(([key, value]) => {
+    console.log(`key = ${key}, value = ${value}`)
+})
 ```
 
 - 合并对象
@@ -304,7 +337,7 @@ let arr = [2, 7, -3, 6, 9]
 arr = arr.map(item => item + 1);
 console.log(arr)// [3, 8, -2, 7, 10]
 
-// 相当于数组求和
+// 相当于数组求和, 第一次循环时(x, y)分别表示数组元素中第一个和第二个元素
 let result = arr.reduce((x, y) => {
     // 上一次处理后的结果
     console.log('x = ' + x)
