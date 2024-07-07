@@ -359,7 +359,36 @@ console.log(result)//126
 
 ### promise使用
 
-需要在html的head标签中引入jquery
+**Promise** 代表 `异步对象`，类似Java中的 `CompletableFuture`
+
+**Promise** 是现代 JavaScript 中异步编程的基础，是一个由异步函数返回的可以向我们指示当前操作所处的状态的对象。在 Promise 返回给调用者的时候，操作往往还没有完成，但 Promise 对象可以让我们操作最终完成时对其进行处理（无论成功还是失败）
+
+**Promise** 有三种状态：
+
+- **待定（pending）**：初始状态，既没有被兑现，也没有被拒绝。这是调用 fetch() 返回 Promise 时的状态，此时请求还在进行中。
+- **已兑现（fulfilled）**：意味着操作成功完成。当 Promise 完成时，它的 then() 处理函数被调用。
+- **已拒绝（rejected）**：意味着操作失败。当一个 Promise 失败时，它的 catch() 处理函数被调用。
+
+fetch 是浏览器支持从远程获取数据的一个函数，这个函数返回的就是 `Promise 对象`
+
+```javascript
+// fetch api, fetch 是浏览器支持从远程获取数据的一个函数，这个函数返回的就是 Promise 对象
+console.log('开始发送请求')
+const promise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+console.log(promise) // 发现promise还处于pending状态
+promise.then(resp => {
+    console.log(`已收到响应，状态值:${resp.status}`); // 打印慢于`已完成发送请求`
+    const respJson = resp.json();
+    respJson.then(json => {
+        console.log(`收到请求返回数据:${json[0].name}`)
+    })
+})
+console.log('已完成发送请求')
+```
+
+
+
+使用ajax时需要在html的head标签中引入jquery
 
 ```html
 <!-- 导入jquery -->

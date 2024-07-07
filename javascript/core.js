@@ -145,7 +145,7 @@ console.log(fun(1, 2, 3)) //3
 
 console.log('模板字符串----------------')
 // 旧写法
-let str1 = "你好，我的名字是："+ userName +"，年龄是：" + age + ", 语言是：" + language;
+let str1 = "你好，我的名字是：" + userName + "，年龄是：" + age + ", 语言是：" + language;
 console.log(str1);
 // 使用模板字符串写法
 let str2 = `你好，我的名字是：${userName}，年龄是：${age}，语言是：${language}`
@@ -239,3 +239,74 @@ result = arr1.reduce((x, y) => {
     return x + y
 }, 100)// 初值100
 console.log(result)//126
+
+console.log('promise----------------------')
+// 1.fetch api
+// fetch 是浏览器支持从远程获取数据的一个函数，这个函数返回的就是 Promise 对象
+console.log('开始发送请求')
+const promise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+console.log(promise) // 发现promise还处于pending状态
+promise.then(resp => {
+    console.log(`已收到响应，状态值:${resp.status}`); // 打印慢于`已完成发送请求`
+    const respJson = resp.json();
+    respJson.then(json => {
+        console.log(`收到请求返回数据:${json[0].name}`)
+    })
+})
+console.log('已完成发送请求')
+
+// 嵌套进行ajax请求，不够直观，阅读体验差
+$.ajax({
+    url: "/mock/user.json",
+    success(data) {
+        console.log('1获取用户信息成功:', data)
+        $.ajax({
+            url: `/mock/user_course_${data.id}.json`,
+            success(data) {
+                console.log('2获取课程信息成功:', data)
+                $.ajax({
+                    url: `/mock/course_score_${data.id}.json`,
+                    success(data) {
+                        console.log('3获取课程分数信息成功:', data)
+                    }
+                })
+            }
+        })
+    }
+})
+
+// 使用 Promise 进行请求封装
+function request(url, data) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url,
+            data: data,
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (err) {
+                reject(err)
+            }
+        })
+    })
+}
+
+// 调用封装的方法
+request('/mock/user.json') // 返回 Promise
+    .then(data => {
+        console.log('4获取用户信息成功:', data)
+        return request(`/mock/user_course_${data.id}.json`) // 继续返回 Promise
+    })
+    .then(data => {
+        console.log('5获取课程信息成功:', data)
+        return request(`/mock/course_score_${data.id}.json`) // 继续返回 Promise
+    })
+    .then(data => {
+        console.log('6获取课程分数信息成功:', data)
+    })
+    .catch(err => {
+        console.log('出现异常', err)
+    })
+
+
+
