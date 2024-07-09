@@ -451,3 +451,25 @@ request('/mock/user.json') // 返回 Promise
     	console.log('出现异常', err)
 	})
 ```
+
+### Async关键字
+
+**async function** 声明创建一个绑定到给定名称的新异步函数。函数体内允许使用 await 关键字，这使得我们可以**更简洁地编写基于 promise 的异步代码**，并且**避免了显式地配置 promise 链**的需要。
+
+- `async 函数`是使用`async关键字声明的函数`。async 函数是 [AsyncFunction](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction) 构造函数的实例，并且其中允许使用 await 关键字。
+- `async 和 await` 关键字让我们可以用一种更简洁的方式写出基于 [Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise) 的异步行为，而无需刻意地链式调用 promise。
+- `async 函数` 返回的还是 `Promise对象`
+
+```javascript
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+async function asyncFunction() {
+    // async函数，配合await时sleep才生效
+    await sleep(3000)
+    console.log('hello async')
+}
+asyncFunction();
+console.log('async end...')
+```
+

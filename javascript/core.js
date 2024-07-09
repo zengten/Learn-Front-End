@@ -308,5 +308,15 @@ request('/mock/user.json') // 返回 Promise
         console.log('出现异常', err)
     })
 
+console.log('async关键字---------------------')
 
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+async function asyncFunction() {
+    // async函数，配合await时sleep才生效
+    await sleep(3000)
+    console.log('hello async')
+}
+asyncFunction();
+console.log('async end...')
