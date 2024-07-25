@@ -472,4 +472,31 @@ async function asyncFunction() {
 asyncFunction();
 console.log('async end...')
 ```
+在异步函数中，你可以在调用一个返回 Promise 的函数之前使用 **await** 关键字。这使得代码在该点上等待，直到 Promise 被完成，这时 Promise 的响应被当作返回值，或者被拒绝的响应被作为错误抛出。
 
+```javascript
+// 只有async标记的方法才能使用await关键字
+async function fetchProducts() {
+    const response = await fetch("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+    if (!response.ok) {
+        throw Error(`HTTP 请求出现错误，状态码 ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(`fetchProducts请求返回数据: ${data[0].name}`)
+}
+
+fetchProducts()
+```
+
+### 模块化
+将 JavaScript 程序拆分为可按需导入的单独模块的机制。
+需要以module的方式导入javascript，然后这个main.js文件就能import其他js的方法或者变量
+`<script src="main.js" type="module"></script>`
+```javascript
+// main.js的内容
+import { user, isAdult } from './lib/user.js'
+
+console.log(`导入user.js的用户名: ${user.username}`)
+
+isAdult()
+```

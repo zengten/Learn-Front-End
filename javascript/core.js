@@ -320,3 +320,14 @@ async function asyncFunction() {
 }
 asyncFunction();
 console.log('async end...')
+
+async function fetchProducts() {
+    const response = await fetch("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+    if (!response.ok) {
+        throw Error(`HTTP 请求出现错误，状态码 ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(`fetchProducts请求返回数据: ${data[0].name}`)
+}
+
+fetchProducts()
