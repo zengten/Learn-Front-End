@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>hello,{{name}}</h1>
+    </div>
+    <script type="text/javascript">
+        // 设置默认不提示, 不生效直接修改源码
+        // Vue.config.productionTip = false; 
+        let vm = new Vue({
+            // 也可以使用document.getElementById('app') 
+            'el':"#app", //element el指定当前vue实例为哪一个容器服务，值通常为css选择器格式
+            'data':{
+                'name':'张三'
+            }
+        })
+    </script>
+    
+
+</body>
+</html>
