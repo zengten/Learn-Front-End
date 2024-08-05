@@ -79,13 +79,40 @@ npm install -g vue@2.6.14
 <script src="./node_modules/vue/dist/vue.js"></script>
 // 就可以使用vue.js了
 ```
+## 模板语法
 
+-   插值语法用于解析标签体的内容，写法{{}}，是js表达式，可以直接读取data中的所有属性
+-   指令语法:用于解析标签(标签体,标签属性, 绑定事件...)上，举例：`v-bind:href="xxx"`
+
+```
+    <div id="app">
+        <h1>插值语法</h1>
+        <h3>你好，{{name}}</h3>
+        <h1>指令语法</h1>
+        <a v-bind:href="url">点我百度一下</a>
+        <h1>指令语法简写</h1>
+        <a :href="url" :x="x.toUpperCase()">简写点我百度一下</a>
+        <h3>学校：{{school.name}}</h3>
+    </div>
+    <script>
+        new Vue({
+            'el':'#app',
+            'data':{
+                'name':'jack',
+                'url':'https://www.baidu.com',
+                'x':'test v-bind',
+                'school':{
+                    'name':'测试学校'
+                }
+            }
+        })
+    </script>
+```
 ## 指令
 
 ### v-model
 
 v-model一般用于**表单项**或者自定义组件，页面变化=>数据变化，数据变化=>页面变化
-
 ```javascript
 <div id="app">
     <!-- v-model指令与vue对象数据 双向绑定 -->
@@ -110,6 +137,11 @@ v-model一般用于**表单项**或者自定义组件，页面变化=>数据变�
     })
 </script>
 ```
+注意：
+-   单向绑定(v-bind)：数据只能从data流向页面。
+-   双向绑定(v-model)：数据不仅能从data流向页面，还可以从页面流向data。
+    -   双向绑定一般都应用在表单类元素上（如：input、select等）
+    -   v-model:value 可以简写为 v-model，因为v-model默认收集的就是value值。
 
 ### v-html&v-text
 
