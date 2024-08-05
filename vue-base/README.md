@@ -332,7 +332,7 @@ v-on事件修饰符来管理事件的行为
         })
     </script>
 ```
-## 注意点
+## 补充点
 ### el和data的写法
 
 -   el的两种写法：
@@ -380,6 +380,34 @@ data() {
 }
 ```
 -   重要原则：由Vue管理的函数，一定不要写箭头函数，写了箭头函数后this就会不再是Vue实例了
+
+### MVVM模型
+MVVM模型
+-   M：模型(Model) ：data中的数据
+-   V：视图(View) ：模板代码
+-   VM：视图模型(ViewModel)：Vue实例
+
+观察发现：
+-   data中所有的属性，最后都出现在了vm身上。
+-   vm身上所有的属性 及 Vue原型上所有属性，在Vue模板中都可以直接使用。
+
+```
+<div id="app">
+    <!-- vue实例上的属性都能通过差值表达式取到，包括原型对象上面的（prototype） -->
+    <h2>hello, {{name}}</h2>
+    <h2>测试一下1, {{_c}}</h2>
+    <h2>测试一下2, {{_render}}</h2>
+</div>
+<script>
+    const vm = new Vue({
+        'data': {
+            'name': 'jack'
+        }
+    })
+    vm.$mount('#app')
+    console.log(vm);
+</script>
+```
 
 ## 计算属性&监听器
 
