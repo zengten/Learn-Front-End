@@ -332,6 +332,54 @@ v-on事件修饰符来管理事件的行为
         })
     </script>
 ```
+## 注意点
+### el和data的写法
+
+-   el的两种写法：
+    -   new Vue时配置el属性
+    -   先创建Vue实例，然后再通过`vm.$mount('#app')`指定el的值
+```javascript
+new Vue({
+    // 第一种写法
+    'el':'#app',
+    'data':{
+        'name':'Jack'
+    }
+})
+// 第二种写法
+vm.$mount('#app')
+```
+-   data的两种写法：目前选择哪种写法都可以，学习组件式则需要使用函数式
+    -   对象式，在new Vue时直接配置
+    -   函数式
+```javascript
+// 第一种写法：普通函数返回对象
+'data': function () {
+    // 此时this是Vue实例
+    console.log('当前this:', this);
+    return {
+        'name': 'Jack'
+    }
+}
+
+// 第二种写法：箭头函数返回对象   
+'data': () => {
+    // 此时this是window对象
+    console.log('当前this:', this);
+    return {
+        'name': 'Jack'
+    }
+}
+// 第三种写法：改成data函数
+data() {
+    // 此时this是Vue实例
+    console.log('当前this:', this);
+    return {
+        'name': 'Jack'
+    }
+}
+```
+-   重要原则：由Vue管理的函数，一定不要写箭头函数，写了箭头函数后this就会不再是Vue实例了
 
 ## 计算属性&监听器
 
