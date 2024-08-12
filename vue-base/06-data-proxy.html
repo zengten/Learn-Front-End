@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-proxy</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>姓名：{{name}}</h2>
+        <h2>年龄：{{age}}</h2>
+    </div>
+    <script>
+        let currentAge = 25
+        // 给person对象内添加字段
+        let person = {
+            name: '张三',
+            sex: '男'
+        }
+        // 添加字段, 默认不可枚举，修改和删除
+        // 数据代理，当读取age的值时会调用get方法，当修改age时会调用set方法
+        Object.defineProperty(person, 'age', {
+            // 直接给age赋值
+            // value: 20,
+            // enumerable: true, // 此时代表这个属性是可以枚举的
+            // writable: true, // 代表可以重写该属性(控制属性是否被修改)
+            // configurable: true, //控制属性是否可以被删除 默认为false
+            // 当读取person的age属性时get属性就会被调用，且返回值就是age的值
+            get: function() {
+                console.log('get invoke...');
+                return currentAge
+            },
+            set(value) {
+                console.log('set invoke...');
+                currentAge = value
+            }
+        })
+        Object.entries(person).forEach(([key, value]) => {
+            console.log(`key = ${key}, value = ${value}`)
+        })
+        // 设计一个数据代理
+        let obj1 = {
+            'x': 10
+        }
+        let obj2 = {
+            'y': 20
+        }
+        Object.defineProperty(obj2, 'x', {
+            get() {
+                return obj1.x
+            },
+            set(value) {
+                obj1.x = value
+            }
+        })
+        // 验证Vue对象中的_data和自定义的data是否相同对象数据，data===vm_data
+        let data
+        let vm = new Vue({
+            'el': '#app',
+            data() {
+                return data = {
+                    'name': 'zhangsan',
+                    'age':12
+                }
+            }
+        })
+        console.log(vm)
+    </script>
+</body>
+
+</html>

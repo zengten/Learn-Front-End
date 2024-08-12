@@ -408,6 +408,86 @@ MVVM模型
     console.log(vm);
 </script>
 ```
+### Object.defineProperty
+
+学习Object.defineProperty Api
+```javascript
+let person = {
+    name: '张三',
+    sex: '男'
+}
+// 添加age字段，默认不可枚举，修改和删除
+Object.defineProperty(person, 'age', {
+    // 直接给age赋值
+    value: 20
+})
+// 数据遍历中，age没有出现
+Object.entries(person).forEach(([key, value]) => {
+    console.log(`key = ${key}, value = ${value}`)
+})
+```
+```javascript
+// 修改这个api的配置
+Object.defineProperty(person, 'age', {
+    value: 20,
+    enumerable: true, // 此时代表这个属性是可以枚举的
+    writable: true, // 代表可以重写该属性(控制属性是否被修改)
+    configurable: true, //控制属性是否可以被删除 默认为false
+})
+```
+需求：实现一个变量的修改，同时修改对象内的某个字段？
+```javascript
+// 使用Object.defineProperty将currentAge和person的age进行绑定
+let currentAge = 25
+let person = {
+    name: '张三',
+    sex: '男'
+}
+// 数据代理，当读取age的值时会调用get方法，当修改age时会调用set方法
+Object.defineProperty(person, 'age', {
+    get: function() {
+        console.log('get invoke...');
+        return currentAge
+    },
+    set(value) {
+        console.log('set invoke...');
+        currentAge = value
+    }
+})
+```
+需求：实现一个数据代理，通过一个对象代理另一个对象中属性的操作
+```javascript
+let obj1 = {
+    'x': 10
+}
+let obj2 = {
+    'y': 20
+}
+// 修改obj1的x属性会影响obj2，反向也是
+Object.defineProperty(obj2, 'x', {
+    get() {
+        return obj1.x
+    },
+    set(value) {
+        obj1.x = value
+    }
+})
+```
+验证Vue对象中的_data和自定义的data是否相同对象数据，data===vm_data
+```javascript
+// 修改data对象，会同时影响vm._data
+let data
+let vm = new Vue({
+    'el': '#app',
+    data() {
+        return data = {
+            'name': 'zhangsan',
+            'age':12
+        }
+    }
+})
+console.log(vm)
+```
 
 ## 计算属性&监听器
 
