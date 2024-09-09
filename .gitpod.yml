@@ -8,8 +8,9 @@ tasks:
 ports:
   - name: Frontend
     description: Port 3000 for the frontend
-    port: 3000
-    onOpen: open-preview
+    port: 5500
+    onOpen: open-browser
+    visibility: public
 
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 vscode:

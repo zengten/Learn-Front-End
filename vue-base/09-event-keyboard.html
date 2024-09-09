@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘事件</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+            1.Vue中常用的按键别名：
+                        回车 => enter
+                        删除 => delete (捕获“删除”和“退格”键)
+                        退出 => esc
+                        空格 => space
+                        换行 => tab (特殊，必须配合keydown去使用)
+                        上 => up
+                        下 => down
+                        左 => left
+                        右 => right
+
+            2.Vue未提供别名的按键，可以使用按键原始的key值去绑定，但注意要转为kebab-case（短横线命名）
+
+            3.系统修饰键（用法特殊）：ctrl、alt、shift、meta
+                        (1).配合keyup使用：按下修饰键的同时，再按下其他键，随后释放其他键，事件才被触发。
+                        (2).配合keydown使用：正常触发事件。
+
+            4.也可以使用keyCode去指定具体的按键（不推荐）
+
+            5.Vue.config.keyCodes.自定义键名 = 键码，可以去定制按键别名
+
+            6.keyup和keydown区别：keyup是按下按键，按键抬起时触发事件，而keydown是按下就触发事件
+    -->
+    <div id="app">
+        多个输入框:<br>
+        <input type="text" @keyup.enter="showInfo" placeholder="回车提示输入"><br>
+        <input type="text" @keyup.delete="showInfo" placeholder="退格或删除提示输入"><br>
+        <input type="text" @keyup.esc="showInfo" placeholder="esc提示输入"><br>
+        <input type="text" @keyup.space="showInfo" placeholder="空格提示输入"><br>
+        <input type="text" @keyup.tab="showInfo" placeholder="table提示输入"><br>
+        <input type="text" @keyup.ctrl="showInfo" placeholder="ctrl提示输入"><br>
+        <input type="text" @keyup.ctrl.i="showInfo" placeholder="同时输入ctrl和i"><br>
+        <input type="text" @keyup.down="showInfo" placeholder="箭头下提示输入"><br>
+        <!-- 使用自定义键名 -->
+        <input type="text" @keyup.test="showInfo" placeholder="自定义键名"><br>
+    </div>
+    <script>
+        // 自定义键名
+        Vue.config.keyCodes.test = 13
+        const vm = new Vue({
+            el: '#app',
+            methods: {
+                showInfo(e) {
+                    console.log(`输入的字符为:${e.target.value}`);
+                    console.log(`键盘按键为:${e.key},键盘按键code=${e.keyCode}`);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -146,7 +146,6 @@ v-model一般用于**表单项**或者自定义组件，页面变化=>数据变�
 ### v-html&v-text
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <!-- 默认对标签进行转义，浏览器显示 <h2>hello</h2> -->
         {{msg}} <br />
@@ -179,7 +178,6 @@ v-model一般用于**表单项**或者自定义组件，页面变化=>数据变�
 ### v-bind
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <!-- 使用v-bind 对html标签的属性进行绑定，区别v-html/text只能绑定标签，不能绑定标签属性 -->
         <!-- 同时也能在浏览器控制台修改 vm.link 属性值 -->
@@ -215,49 +213,88 @@ v-on事件修饰符来管理事件的行为
 - `.stop`：阻止事件冒泡到父元素
 - `.prevent`：阻止默认事件发生
 - `.capture`：使用事件捕获模式
-- `.self`：只有元素自身触发事件才执行（冒泡或捕获都不执行）
-- `.once`：只执行一次
+- `.self`：只有event.target是当前操作的元素时才触发事件（冒泡或捕获都不执行）
+- `.once`：事件只触发一次
+- `.passive`：事件的默认行为立即执行，无需等待事件回调执行完毕
 
-按键修饰符：`enter,tab,delete,esc,space,up,down,left,right`
-
-```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+```html
     <div id="app">
-        <!-- 事件修饰符 click.once 只执行一次-->
-        <div style="border: 1px solid red;padding: 20px;" v-on:click.once="hello">
+        <h2>欢迎，{{name}}</h2>
+        <div class="demo1" @click="aTagShowInfo">
+            <!-- 使用@click.prevent阻止默认事件，a标签无法跳转 -->
+            <a href="https://www.baidu.com" @click.prevent="aTagShowInfo">a标签->跳转到百度</a>
+        </div>
+        <div class="demo1" @click="showInfo">
             大div
-            <!-- v-on 可以简写为@ -->
-            <!-- click.stop 其中stop是事件修饰符， 阻止单击事件继续传播到大div -->
-            <div style="border: 1px solid blue;padding: 20px;" @click.stop="hello">
-                小div <br />
-                <!-- click.prevent 阻止跳转到百度，但是不能阻止事件冒泡到大div-->
-                <a href="http://www.baidu.com" @click.prevent.stop="hello">去百度</a>
-            </div>
+            <!-- 使用@click.stop阻止事件的冒泡到大div，不会调用两次showInfo -->
+            <button @click.stop="showInfo">大div中的小按钮</button>
         </div>
-        <div>
-            <!-- 输入框内 修改num事件  向上箭头则 num++  向下箭头则 num-- shift+鼠标点击则 num = 10-->
-            <input type="text" v-model="num" v-on:keyup.up="num++" @keyup.down="num--" @click.shift="num=10"></input>
+        <button @click.once="showInfo">点我提示信息,只在第一次点击生效</button>
+        <!-- 事件默认是以冒泡的方式执行的，打印2->1，使用@click.capture就会让事件以捕获的方式执行，打印1->2 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            大div
+            <div class="box2" @click="showMsg(2)">小div</div>
         </div>
+        <!-- 使用@click.self也可阻止事件的冒泡行为，因为只有event.target是当前操作的元素时才触发事件 -->
+        <div class="box1" @click.self="showEventTarget">
+            大div
+            <div class="box2" @click="showEventTarget">小div</div>
+        </div>
+        <!-- wheel：鼠标滚轮的滚动事件，scroll：滚动条的滚动事件 -->
+        <!-- 使用passive事件的默认行为立即执行，无需等待事件回调showData方法执行完毕； -->
+        <ul class="list" @wheel.passive="showData">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
     </div>
     <script>
-        let vm = new Vue({
+        const vm = new Vue({
             el: '#app',
-            data: {
-                num: 0
-            },
-            methods: {
-                hello() {
-                    alert("点击了")
+            data() {
+                return {
+                    name: 'Jack'
                 }
             },
+            methods: {
+                aTagShowInfo(e) {
+                    // 阻止事件的默认行为，可以让a标签无法跳转，另外可以使用vue的写法@click.prevent
+                    // e.preventDefault()
+                    alert('开始学习...')
+                },
+                showInfo(e) {
+                    alert('提示信息')
+                },
+                showMsg(msg) {
+                    console.log(msg);
+                },
+                showEventTarget(e) {
+                    console.log(e.target);
+                },
+                showData() {
+                    for (let i = 0; i < 10000; i++) {
+                        console.log(i)
+                    }
+                    console.log('累坏了');
+                }
+            }
         })
     </script>
 ```
 
+**补充**：
+-   keyup和keydown区别：keyup是按下按键，按键抬起时触发事件，而keydown是按下就触发事件
+-   Vue.config.keyCodes.自定义键名 = 键码，可以去定制按键别名
+-   按键修饰符：`enter,tab,delete,esc,space,up,down,left,right`
+-   系统修饰键（用法特殊）：ctrl、alt、shift、meta
+    -   配合keyup使用：按下修饰键的同时，再按下其他键，随后释放其他键，事件才被触发。
+    -   配合keydown使用：正常触发事件。
+
+
 ### v-for
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <ul>
             <!-- v-for 遍历数组元素  遍历时写上唯一属性:key 可以提高vue渲染效率，如id-->
@@ -301,7 +338,6 @@ v-on事件修饰符来管理事件的行为
 ### v-if&v-show
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <!-- v-if 不符合的标签直接不显示（包括代码）-->
         <button @click="random()">点我鸭</button>
@@ -492,7 +528,6 @@ console.log(vm)
 ## 计算属性&监听器
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <ul>
             <li>
@@ -553,7 +588,6 @@ console.log(vm)
 ## filter
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <ul>
             <li v-for="(user, index) in users" :key="index">
@@ -598,7 +632,6 @@ console.log(vm)
 ## 组件化
 
 ```javascript
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <div id="app">
         <button @click="count++">点击了{{count}}次</button>
         <!-- 使用全局组件，注意标签里面的驼峰命令转化为横杠 -->

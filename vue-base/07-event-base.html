@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/vue.js"></script>
+    <title>vue事件</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>欢迎 {{name}}</h2>
+        <button v-on:click="showInfo1">点我提示信息1</button>
+        <!-- 简写形式，v-on:click等同于@click，并且默认传参event -->
+        <button @click="showInfo1">点我提示信息2</button>
+        <!-- 自定义传参，事件使用$event，其他传参直接写 -->
+        <button @click="showInfo1($event, 20)">点我提示信息3</button>
+    </div>
+    <script>
+        // 注意showInfo1方法不能写在Vue实例外面
+        // 也不能写在data里面，data内的属性会生成get/set影响效率（每次使用都要去寻找）
+        const vm = new Vue({
+            el: '#app',
+            methods: {
+                showInfo1(event, param) {
+                    alert('你好')
+                    console.log(this);
+                    // 验证当前this就是vm对象
+                    console.log(vm === this); // true
+                    console.log(event);
+                    // 取一些event属性，比如button的按钮名称
+                    console.log(event.target.innerText);
+                    console.log(param);
+                }
+            },
+            data() {
+                return {
+                    name: 'jack'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件修饰符</title>
+    <script src="../js/vue.js"></script>
+</head>
+<style>
+    * {
+        margin: 20px
+    }
+
+    .demo1 {
+        height: 100px;
+        background: rgb(103, 212, 245);
+    }
+
+    h2 {
+        background: aqua;
+    }
+
+    .box1 {
+        padding: 5px;
+        background: orange;
+    }
+
+    .box2 {
+        height: 20px;
+        background: deepskyblue;
+    }
+
+    .list {
+        height: 200px;
+        width: 200px;
+        background: rgb(146, 255, 4);
+        overflow: auto;
+    }
+
+    .list li {
+        height: 100px;
+    }
+</style>
+
+<body>
+    <!--
+				Vue中的事件修饰符：
+						1.prevent：阻止默认事件（常用）；
+						2.stop：阻止事件冒泡（常用）；
+						3.once：事件只触发一次（常用）；
+						4.capture：使用事件的捕获模式；
+						5.self：只有event.target是当前操作的元素时才触发事件；
+						6.passive：事件的默认行为立即执行，无需等待事件回调执行完毕；
+		-->
+    <div id="app">
+        <h2>欢迎，{{name}}</h2>
+        <div class="demo1" @click="aTagShowInfo">
+            <!-- 使用@click.prevent阻止默认事件，a标签无法跳转 -->
+            <a href="https://www.baidu.com" @click.prevent="aTagShowInfo">a标签->跳转到百度</a>
+        </div>
+        <div class="demo1" @click="showInfo">
+            大div
+            <!-- 使用@click.stop阻止事件的冒泡到大div，不会调用两次showInfo -->
+            <button @click.stop="showInfo">大div中的小按钮</button>
+        </div>
+        <button @click.once="showInfo">点我提示信息,只在第一次点击生效</button>
+        <!-- 事件默认是以冒泡的方式执行的，打印2->1，使用@click.capture就会让事件以捕获的方式执行，打印1->2 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            大div
+            <div class="box2" @click="showMsg(2)">小div</div>
+        </div>
+        <!-- 使用@click.self也可阻止事件的冒泡行为，因为只有event.target是当前操作的元素时才触发事件 -->
+        <div class="box1" @click.self="showEventTarget">
+            大div
+            <div class="box2" @click="showEventTarget">小div</div>
+        </div>
+        <!-- wheel：鼠标滚轮的滚动事件，scroll：滚动条的滚动事件 -->
+        <!-- 使用passive事件的默认行为立即执行，无需等待事件回调showData方法执行完毕； -->
+        <ul class="list" @wheel.passive="showData">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name: 'Jack'
+                }
+            },
+            methods: {
+                aTagShowInfo(e) {
+                    // 阻止事件的默认行为，可以让a标签无法跳转，另外可以使用vue的写法@click.prevent
+                    // e.preventDefault()
+                    alert('开始学习...')
+                },
+                showInfo(e) {
+                    alert('提示信息')
+                },
+                showMsg(msg) {
+                    console.log(msg);
+                },
+                showEventTarget(e) {
+                    console.log(e.target);
+                },
+                showData() {
+                    for (let i = 0; i < 10000; i++) {
+                        console.log(i)
+                    }
+                    console.log('累坏了');
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
