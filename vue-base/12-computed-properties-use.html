@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性-使用vue计算属性实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        姓：<input type="text" v-model="firstName"><br><br>
+        名：<input type="text" v-model="lastName"><br><br>
+        全名：<span>{{fullName}}</span><br><br>
+        <!-- 多次使用fullName，只执行一次计算属性的get方法，之后有缓存 -->
+        全名：<span>{{fullName}}</span><br><br>
+        全名：<span>{{fullName}}</span><br><br>
+    </div>
+    <script>
+        
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: '张',
+                lastName: '三'
+            },
+            computed: {
+                // 完整写法
+                // fullName: {
+                //     get() {
+                //         console.log('fullName get被调用...');
+                //         return this.firstName + '-' + this.lastName;
+                //     },
+                //     set(value) {
+                //         // 控制台执行 vm.fullName='李-四' 就会调用这个方法
+                //         console.log('fullName set被调用...');
+                //         const{firstName, lastName} = value.split('-');
+                //         this.firstName = firstName;
+                //         this.lastName = lastName;
+                //     }
+                // }
+                // 简写（没有set的情况下）
+                fullName() {
+                    console.log('fullName get被调用...');
+                    return this.firstName + '-' + this.lastName;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
