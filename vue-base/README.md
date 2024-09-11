@@ -525,60 +525,52 @@ let vm = new Vue({
 console.log(vm)
 ```
 
-## 计算属性&监听器
-
+## 计算属性
+计算属性：
+-   定义：要用的属性不存在，要通过已有属性计算得来。
+-   原理：底层借助了Objcet.defineproperty方法提供的getter和setter。
+-   get函数什么时候执行？
+    -   初次读取时会执行一次。
+    -   当依赖的数据发生改变时会被再次调用。
+-   优势：与methods实现相比，内部有缓存机制（复用），效率更高，调试方便。
+-   补充：
+    -   计算属性最终会出现在vm上（而不是出现在`vm._data`上），直接读取使用即可。
+    -   如果计算属性要被修改，那必须写set函数去响应修改，且set中要引起计算时依赖的数据发生改变。
 ```javascript
     <div id="app">
-        <ul>
-            <li>
-                iPhone 14, 价格{{price1}}, 数量<input type="number" v-model="num1">
-            </li>
-            <li>
-                小米 13, 价格{{price2}}, 数量<input type="number" v-model="num2">
-            </li>
-            <li>
-                总价格：{{calculatePrice2}}
-            </li>
-            {{message}}
-        </ul>
+        姓：<input type="text" v-model="firstName"><br><br>
+        名：<input type="text" v-model="lastName"><br><br>
+        全名：<span>{{fullName}}</span><br><br>
+        <!-- 多次使用fullName，只执行一次计算属性的get方法，之后有缓存 -->
+        全名：<span>{{fullName}}</span><br><br>
+        全名：<span>{{fullName}}</span><br><br>
     </div>
     <script>
-        let vm = new Vue({
-            el: "#app",
+        const vm = new Vue({
+            el: '#app',
             data: {
-                num1: 1,
-                num2: 1,
-                price1: 6000,
-                price2: 1000,
-                message: ""
+                firstName: '张',
+                lastName: '三'
             },
-            methods: {
-                // 使用这个方法会显示 function () { [native code] }  为啥！
-                calculatePrice1() {
-                    return this.num1 * this.price1 + this.num2 * this.price2;
-                }
-            },
-            // 和methods有啥区别？
             computed: {
-                // 计算总价格
-                calculatePrice2() {
-                    return this.num1 * this.price1 + this.num2 * this.price2;
-                }
-            },
-            // 监听器
-            watch: {
-                // num1值变化时都会调用此方法
-                // 问题：改成箭头函数不生效
-                num1: function (newValue, oldValue) {
-                    // alert(oldValue + "=>" + newValue)
-                    console.log(oldValue + "=>" + newValue)
-                    // 增加提示消息
-                    if (newValue >= 3) {
-                        this.message = "iphone 14库存上限!"
-                        this.num1 = 3
-                    } else {
-                        this.message = ""
-                    }
+                // 完整写法
+                // fullName: {
+                //     get() {
+                //         console.log('fullName get被调用...');
+                //         return this.firstName + '-' + this.lastName;
+                //     },
+                //     set(value) {
+                //         // 控制台执行 vm.fullName='李-四' 就会调用这个方法
+                //         console.log('fullName set被调用...');
+                //         const{firstName, lastName} = value.split('-');
+                //         this.firstName = firstName;
+                //         this.lastName = lastName;
+                //     }
+                // }
+                // 简写（没有set的情况下）
+                fullName() {
+                    console.log('fullName get被调用...');
+                    return this.firstName + '-' + this.lastName;
                 }
             }
         })
