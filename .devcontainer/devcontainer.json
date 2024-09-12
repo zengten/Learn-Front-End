@@ -10,11 +10,14 @@
 		// Configure properties specific to VS Code.
 		"vscode": {
 			"settings": {
-                "workbench.colorTheme": "Default Dark+"
+                "workbench.colorTheme": "Default Light Modern"
             },
 			"extensions": [
                 "k--kato.intellij-idea-keybindings",
-				"ritwickdey.LiveServer"
+				"ritwickdey.LiveServer",
+				"formulahendry.auto-rename-tag",
+				"yzhang.markdown-all-in-one",
+				"hollowtree.vue-snippets"
 			]
 		}
 	},
