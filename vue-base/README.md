@@ -577,6 +577,116 @@ console.log(vm)
     </script>
 ```
 
+## 监视器watch
+监视器可以侦听属性的变化
+基本使用：
+```javascript
+watch: {
+    // 监视的配置对象, watch不仅能监视data的普通属性，也可以检测计算属性
+    isHot: {
+        // 当这个属性为true时，页面刚渲染就运行handler函数，默认false
+        immediate: true,
+        // handler啥时候调用呢？
+        // 当isHot发生改变就会调用该函数
+        // handler接收两个参数，一个是这个状态参数改变前的值，另一个是改变后的旧值
+        handler(newValue, oldValue) {
+            console.log(`isHot监视器, newValue = ${newValue}, oldValue = ${oldValue}`);
+        }
+    }
+    // 简写 前提:不使用immediate等额外属性
+    isHot(newValue, oldValue) {
+        console.log(`isHot监视器, newValue = ${newValue}, oldValue = ${oldValue}`);
+    }
+}
+```
+第二种写法，使用vm实现
+```javascript
+// 监视器第二种写法
+vm.$watch('flag', {
+    immediate: true,
+    handler(newValue, oldValue) {
+        console.log(`flag监视器, newValue = ${newValue}, oldValue = ${oldValue}`);
+    }
+});
+// 简写
+vm.$watch('flag', function (newValue, oldValue) {
+    console.log(`flag监视器, newValue = ${newValue}, oldValue = ${oldValue}`);
+});
+```
+深度监视器：
+```javascript
+const vm = new Vue({
+    el: '#app',
+    data: {
+        numbers: {
+            a: 1,
+            b: 2
+        }
+    },
+    watch: {
+        // 对numbers整个对象进行监视，任意元素变化都会执行handler
+        numbers: {
+            deep: true,
+            // 为啥深度监视器不能获取oldValue.a旧值?
+            // 因为深度监视器是浅拷贝，只是对比val地址变化，不会保留对象的整个历史记录
+            handler(newValue, oldValue) {
+                console.log(`numbers深度监视器a, newValue = ${newValue.a}, oldValue = ${oldValue.a}`);
+                console.log(`numbers深度监视器b, newValue = ${newValue.b}, oldValue = ${oldValue.b}`);
+            }
+        },
+        'numbers.a': {
+            handler(val, oldVal) {
+                console.log(`numbers.a监视器, newValue = ${val}, oldValue = ${oldVal}`);
+            }
+        }
+    }
+})
+vm.$watch('numbers.b', function (val, oldVal) {
+    console.log(`numbers.b监视器, newValue = ${val}, oldValue = ${oldVal}`);
+})
+```
+**监视器对比计算属性**：
+
+computed和watch之间的区别：
+-   computed能完成的功能，watch都可以完成。
+-   watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作。
+
+两个重要的小原则：
+-   所被Vue管理的函数，最好写成普通函数，这样this的指向才是vm 或 组件实例对象。
+-   所有不被Vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数），最好写成箭头函数，这样this的指向才是vm 或 组件实例对象。
+```javascript
+const vm = new Vue({
+    el: '#app',
+    data: {
+        firstName: '张',
+        lastName: '三',
+        fullName: '张-三'
+    },
+    watch: {
+        // 监视姓名的修改，然后改变全名
+        firstName: {
+            handler(val) {
+                this.fullName = val + '-' + this.lastName;
+            }
+        },
+        lastName(val) {
+            // 监视器可以设置异步操作，2秒后再完成值更新
+            setTimeout(() => {
+                // 这里的this是vue实例对象
+                console.log(this);
+                this.fullName = this.firstName + '-' + val;
+            }, 2000);
+        }
+    },
+    computed: {
+        // 计算属性不能设置异步
+        test() {
+            return this.firstName + '-' + this.lastName;
+        }
+    }
+})
+```
+
 ## filter
 
 ```javascript
