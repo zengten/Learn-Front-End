@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视器-普通方法实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>今天天气很{{status}}</h1>
+        <button @click="changeWeather">改变</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                isHot: false
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot;
+                }
+            },
+            computed: {
+                status() {
+                    return this.isHot ? '炎热' : '寒冷';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
