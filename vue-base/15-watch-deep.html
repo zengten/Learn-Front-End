@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视器-深度监视</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h3>a的值是:{{ numbers.a }}</h3>
+        <button @click="numbers.a++">点我让a加一</button>
+        <h3>b的值是:{{ numbers.b }}</h3>
+        <button @click="numbers.b--">点我让b减一</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                numbers: {
+                    a: 1,
+                    b: 2
+                }
+            },
+            watch: {
+                // 对numbers整个对象进行监视，任意元素变化都会执行handler
+                numbers: {
+                    deep: true,
+                    // 为啥深度监视器不能获取oldValue.a旧值?
+                    // 因为深度监视器是浅拷贝，只是对比val地址变化，不会保留对象的整个历史记录
+                    handler(newValue, oldValue) {
+                        console.log(`numbers深度监视器a, newValue = ${newValue.a}, oldValue = ${oldValue.a}`);
+                        console.log(`numbers深度监视器b, newValue = ${newValue.b}, oldValue = ${oldValue.b}`);
+                    }
+                },
+                'numbers.a': {
+                    handler(val, oldVal) {
+                        console.log(`numbers.a监视器, newValue = ${val}, oldValue = ${oldVal}`);
+                    }
+                }
+            }
+        })
+        vm.$watch('numbers.b', function (val, oldVal) {
+            console.log(`numbers.b监视器, newValue = ${val}, oldValue = ${oldVal}`);
+        })
+    </script>
+</body>
+
+</html>
