@@ -687,6 +687,79 @@ const vm = new Vue({
 })
 ```
 
+## 样式绑定
+
+-   class样式，写法`:class="xxx"` xxx可以是字符串、对象、数组。
+    -   字符串写法适用于：类名不确定，要动态获取。
+    -   对象写法适用于：要绑定多个样式，个数不确定，名字也不确定。
+    -   数组写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不用。
+-   style样式
+    -   `:style="{fontSize: xxx}"`其中xxx是动态值。
+    -   `:style="[a,b]"`其中a、b是样式对象。
+
+```javascript
+<div id="app">
+<!--:class 绑定class样式字符串写法 适用于样式的类名不确定，需要动态指定-->
+<div class="basic" :class="mood" @click="changeMood">{{name}}</div><br /><br />
+
+<!--:class 绑定class样式数组写法 适用于样式个数不确定，名字也不确定的状况-->
+<div class="basic" :class="moodArr">{{name}}</div><br /><br />
+
+<!--:class 绑定class样式对象写法 适用于要绑定的样式个数确定，名字确定，但动态决定要不要用的状况-->
+<div class="basic" :class="moodObj">{{name}}</div><br /><br />
+
+<!-- 绑定style样式--对象写法 -->
+<div class="basic" :style="styleObj">{{name}}</div><br /><br />
+
+<!-- 绑定style样式--数组写法 -->
+<div class="basic" :style="[styleObj, styleObj1]">{{name}}</div><br /><br />
+
+<!-- 绑定style样式--数组写法2 -->
+<div class="basic" :style="styleArr">{{name}}</div>
+</div>
+<script>
+const vm = new Vue({
+    el: '#app',
+    data: {
+        name: '张三',
+        mood: 'normal',
+        moodArr: ['test01', 'test02', 'test03'],
+        // true或者false表示是否使用该样式
+        moodObj: {
+            test01: false,
+            test02: false,
+            test03: true
+        },
+        styleObj: {
+            fontSize: '50px',
+            color: 'red'
+        },
+        styleObj1: {
+            backgroundColor: 'blue'
+        },
+        styleArr: [
+            {
+                fontSize: '40px',
+                color: 'skyblue'
+            },
+            {
+                backgroundColor: 'yellowgreen'
+            }
+        ]
+    },
+    methods: {
+        changeMood() {
+            // 非框架旧写法
+            // document.getElementById('basic').className='basic happy';
+            let arr = ['normal', 'happy', 'sad'];
+            let index = Math.floor(Math.random() * 3);
+            console.log(`index = ${index}`);
+            this.mood = arr[index];
+        }
+    }
+})
+</script>
+```
 ## filter
 
 ```javascript
