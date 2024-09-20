@@ -335,36 +335,55 @@ v-on事件修饰符来管理事件的行为
     </script>
 ```
 
-### v-if&v-show
+### 条件渲染 v-if&v-show
+
+条件渲染：
+
+`v-if`
+-   写法：
+    -   `v-if="表达式"`
+    -   `v-else-if="表达式"`
+    -   `v-else="表达式"`
+-   适用于：切换频率较低的场景。
+-   特点：不展示的DOM元素直接被移除。
+-   注意：v-if可以和:v-else-if、v-else一起使用，但要求结构不能被“打断”。
+
+`v-show`
+-   写法：v-show="表达式"
+-   适用于：切换频率较高的场景
+-   特点：不展示的DOM元素未被移除，仅仅是使用样式隐藏掉
+
+**备注**：使用v-if的时，元素可能无法获取到，而使用v-show一定可以获取到
+
+**v-if和v-show区别**：v-if代码直接消失，而v-show代码依旧存在，只是`display: none;`不展示
 
 ```javascript
     <div id="app">
-        <!-- v-if 不符合的标签直接不显示（包括代码）-->
-        <button @click="random()">点我鸭</button>
-        <span>{{num}}</span>
-        <h1 v-if="num >= 0.75">看到我啦，&gt; = 0.75</h1>
-        <h1 v-else-if="num >= 0.5">看到我啦，&gt; = 0.5</h1>
-        <h1 v-else-if="num >= 0.2">看到我啦，&gt; = 0.2</h1>
-        <h1 v-else>看到我啦，&gt; = 0.1</h1>
-
-        <!-- v-if和v-show区别：flag=false时，v-if代码直接消失，而v-show代码依旧存在，只是不展示，如下 -->
-        <!-- <h1 style="display: none;">show看到我</h1> -->
-        <button @click="flag=false">点咯</button>
-        <h1 v-if="flag">if看到我</h1>
-        <h1 v-show="flag">show看到我</h1>
+        <h2>{{name}}</h2>
+        <h2>当前n的值为:{{n}}</h2>
+        <button @click="n++">点我n++</button>
+        <!-- 使用v-show进行条件渲染 -->
+        <h2 v-show="n===1">JAVA</h2>
+        <h2 v-show="n===2">C++</h2>
+        <h2 v-show="n===3">PYTHON</h2>
+        <!-- 使用v-if联合v-else-if和v-else进行条件渲染 -->
+        <h2 v-if="n===1">Vue</h2>
+        <h2 v-else-if="n===2">React</h2>
+        <h2 v-else="n===3">Angular</h2>
+        <!-- 如果需要同时显示/隐藏多个标签，使用template和v-if，但是不能使用v-show -->
+        <template v-if="n===1">
+            <h2>北京</h2>
+            <h2>上海</h2>
+            <h2>深圳</h2>
+        </template>
     </div>
     <script>
-        let vm = new Vue({
+        const vm = new Vue({
             el: '#app',
             data: {
-                num: 0,
-                flag: true
-            },
-            methods: {
-                random() {
-                    this.num = Math.random()
-                }
-            },
+                name: '条件渲染',
+                n: 0
+            }
         })
     </script>
 ```
