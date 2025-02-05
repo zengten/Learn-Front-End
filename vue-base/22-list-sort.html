@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表排序</title>
+    <script src="../js/vue.js"></script>
+</head>
+<!--
+
+-->
+
+<body>
+    <div id="app">
+        <!-- 同时使用计算属性实现排序 + 关键字搜索 -->
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyword"/>
+        排序方式：
+        <button @click="sortType = 1">年龄降序排序</button>
+        <button @click="sortType = 2">年龄升序排序</button>
+        <ul>
+            <li v-for="(item, index) in filterPersonList" :key="index">
+                {{item.id}}-{{item.name}}-{{item.age}}
+                <input type="text">
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                sortType: 0,
+                personList: [
+                    { id: '001', name: '张三', age: 20, gender: '男' },
+                    { id: '002', name: '李四', age: 16, gender: '女' },
+                    { id: '003', name: '王五', age: 28, gender: '男' },
+                    { id: '004', name: '王力宏', age: 37, gender: '男' }
+                ]
+            },
+            computed: {
+                filterPersonList() {
+                    const arr = this.personList.filter(item => item.name.indexOf(this.keyword) !== -1);
+                    // 判断是否需要排序
+                    if (!this.sortType) {
+                        return arr;
+                    }
+                    // sort会改变的原数组
+                    return arr.sort((p1, p2) => this.sortType == 1 ? (p2.age - p1.age) : (p1.age - p2.age));
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

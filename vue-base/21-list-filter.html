@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表过滤</title>
+    <script src="../js/vue.js"></script>
+</head>
+<!--
+   当computed和watch都可以实现基本功能时优先考虑computed (重要)
+-->
+
+<body>
+    <div id="app">
+        <h2>人员列表</h2>
+        监视器实现：<input type="text" v-model="keyWordWatch"><br /><br />
+        <ul>
+            <li v-for="(item, index) in filterPersonList" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}
+            </li>
+        </ul>
+        计算属性实现：<input type="text" v-model="keyWordComputed"><br /><br />
+        <ul>
+            <li v-for="(item, index) in computedPersonList" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                keyWordWatch: '',
+                keyWordComputed: '',
+                personList: [
+                    { id: '001', name: '张三', age: 20, gender: '男' },
+                    { id: '002', name: '李四', age: 16, gender: '女' },
+                    { id: '003', name: '王五', age: 28, gender: '男' }
+                ],
+                filterPersonList: []
+            },
+            watch: {
+                keyWordWatch: {
+                    // 页面初始化也调用一次，进行空字符的筛选
+                    immediate: true,
+                    // 注意任意 字符串.indexOf('') = 0; 也就是任意字符串都包含空字符
+                    handler(val) {
+                        console.log('触发监视器...' + val);
+                        this.filterPersonList = this.personList.filter(item =>
+                            item.name.indexOf(this.keyWordWatch) !== -1
+                        );
+                    }
+                }
+            },
+            computed: {
+                computedPersonList() {
+                    return this.personList.filter(item => item.name.indexOf(this.keyWordComputed) !== -1);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

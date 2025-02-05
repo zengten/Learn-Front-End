@@ -293,44 +293,57 @@ v-on事件修饰符来管理事件的行为
 
 
 ### v-for
+-   用于展示列表数据
+-   语法：v-for="(item, index) in xxx" :key="yyy"
+-   可遍历：数组、对象、字符串（用的很少）、指定次数（用的很少）
 
 ```javascript
     <div id="app">
+        <!-- 遍历数组, key一定不要重复, 不然会报错 -->
+        <h2>基本列表</h2>
         <ul>
-            <!-- v-for 遍历数组元素  遍历时写上唯一属性:key 可以提高vue渲染效率，如id-->
-            <!-- v-if 过滤部分元素 -->
-            <li v-for="(user,index) in users" :key="user.name" v-if="user.age >= 21">
-                序号 {{index}} => {{user.name}} => {{user.gender}} => {{user.age}}
-                <br />
-                <!-- 继续遍历 所有对象信息 柳岩 => 女 => 21 => -->
-                <span v-for="(value) in user">{{value}} => </span> <br />
-                <!-- 对象信息 key,value 形式  name : 柳岩 ,gender : 女 ,age : 21 , -->
-                <span v-for="(value, key) in user">{{key}} : {{value}} ,</span> <br />
-                <!-- 包含属性索引 -->
-                <!-- name : 柳岩 : 属性index : 0,gender : 女 : 属性index : 1,age : 21 : 属性index : 2, -->
-                <span v-for="(value, key, index) in user">{{key}} : {{value}} : 属性index : {{index}},</span>
+            <li v-for="(item, index) in personList" :key="index">
+                {{item.id}}-{{item.name}}-{{item.age}}
             </li>
         </ul>
-
+        <!-- 遍历对象 -->
+        <h2>car信息</h2>
         <ul>
-            <!-- 数值数组nums，可能有元素重复，可以采用index作为key提升渲染效率 -->
-            <li v-for="(num, index) in nums" :key="index">
-                {{num}} =>
+            <li v-for="(value, key) in car" :key="key">
+                {{key}}-{{value}}
+            </li>
+        </ul>
+        <!-- 遍历字符串 -->
+        <h2>字符串</h2>
+        <ul>
+            <li v-for="(char, index) in str" :key="index">
+                {{index}}-{{char}}
+            </li>
+        </ul>
+        <!-- 遍历指定次数 -->
+        <h2>指定次数</h2>
+        <ul>
+            <li v-for="(num, index) in 5" :key="index">
+                {{index}}-{{num}}
             </li>
         </ul>
     </div>
     <script>
-        let vm = new Vue({
+        const vm = new Vue({
             el: '#app',
             data: {
-                users: [
-                    { name: '柳岩', gender: '女', age: 21 },
-                    { name: '范冰冰', gender: '女', age: 24 },
-                    { name: '刘亦菲', gender: '女', age: 18 },
-                    { name: '古力娜扎', gender: '女', age: 25 }
+                personList: [
+                    { id: '001', name: '张三', age: 20 },
+                    { id: '002', name: '李四', age: 16 },
+                    { id: '003', name: '王五', age: 28 }
                 ],
-                nums: [1, 2, 3, 4, 4]
-            },
+                car: {
+                    name: '小米',
+                    price: '21.99w',
+                    color: '黑色'
+                },
+                str: 'hello'
+            }
         })
     </script>
 ```
@@ -542,6 +555,337 @@ let vm = new Vue({
     }
 })
 console.log(vm)
+```
+### 列表中key的作用
+
+react、vue中的key有什么作用？（key的内部原理）
+-   虚拟DOM中key的作用：
+    -   key是虚拟DOM对象的标识，
+    -   当数据发生变化时，Vue会根据【新数据】生成【新的虚拟DOM】
+    -   随后Vue进行【新虚拟DOM】与【旧虚拟DOM】的差异比较，比较规则如下：
+
+-   对比规则：
+    -   旧虚拟DOM中找到了与新虚拟DOM相同的key：
+        -   若虚拟DOM中内容没变, 直接使用之前的真实DOM！
+        -   若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM。
+    -   旧虚拟DOM中未找到与新虚拟DOM相同的key，创建新的真实DOM，随后渲染到到页面。
+
+-   用index作为key可能会引发的问题：
+    -   若对数据进行：逆序添加、逆序删除等破坏顺序操作:
+        -   会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
+    -   如果结构中还包含输入类的DOM：会产生错误DOM更新 ==> 界面有问题。
+
+-   开发中如何选择key?:
+    -   最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
+    -   如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，使用index作为key是没有问题的。
+
+```javascript
+    <div id="app">
+        <h2>人员列表</h2>
+        <ul>
+            <!--key唯一标识: 身份证，属性key是被vue给征用的，并不反应在真实dom上-->
+            <li v-for="(item, index) in personList" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}
+                <input type="text">
+            </li>
+        </ul>
+        <button @click.once="addPerson">添加一个用户</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                personList: [
+                    { id: '001', name: '张三', age: 20 },
+                    { id: '002', name: '李四', age: 16 },
+                    { id: '003', name: '王五', age: 28 }
+                ]
+            },
+            methods: {
+                addPerson() {
+                    // 数组头部添加一个元素
+                    this.personList.unshift({ id: '004', name: '赵六', age: 53 })
+                }   
+            }
+        })
+    </script>
+```
+### 列表过滤
+-   分别使用计算属性和监视器实现
+```javascript
+    <div id="app">
+        <h2>人员列表</h2>
+        监视器实现：<input type="text" v-model="keyWordWatch"><br /><br />
+        <ul>
+            <li v-for="(item, index) in filterPersonList" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}
+            </li>
+        </ul>
+        计算属性实现：<input type="text" v-model="keyWordComputed"><br /><br />
+        <ul>
+            <li v-for="(item, index) in computedPersonList" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                keyWordWatch: '',
+                keyWordComputed: '',
+                personList: [
+                    { id: '001', name: '张三', age: 20, gender: '男' },
+                    { id: '002', name: '李四', age: 16, gender: '女' },
+                    { id: '003', name: '王五', age: 28, gender: '男' }
+                ],
+                filterPersonList: []
+            },
+            watch: {
+                keyWordWatch: {
+                    // 页面初始化也调用一次，进行空字符的筛选
+                    immediate: true,
+                    // 注意任意 字符串.indexOf('') = 0; 也就是任意字符串都包含空字符
+                    handler(val) {
+                        console.log('触发监视器...' + val);
+                        this.filterPersonList = this.personList.filter(item =>
+                            item.name.indexOf(this.keyWordWatch) !== -1
+                        );
+                    }
+                }
+            },
+            computed: {
+                computedPersonList() {
+                    return this.personList.filter(item => item.name.indexOf(this.keyWordComputed) !== -1);
+                }
+            }
+        })
+    </script>
+```
+### 列表排序
+```javascript
+    <div id="app">
+        <!-- 同时使用计算属性实现排序 + 关键字搜索 -->
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyword"/>
+        排序方式：
+        <button @click="sortType = 1">年龄降序排序</button>
+        <button @click="sortType = 2">年龄升序排序</button>
+        <ul>
+            <li v-for="(item, index) in filterPersonList" :key="index">
+                {{item.id}}-{{item.name}}-{{item.age}}
+                <input type="text">
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                sortType: 0,
+                personList: [
+                    { id: '001', name: '张三', age: 20, gender: '男' },
+                    { id: '002', name: '李四', age: 16, gender: '女' },
+                    { id: '003', name: '王五', age: 28, gender: '男' },
+                    { id: '004', name: '王力宏', age: 37, gender: '男' }
+                ]
+            },
+            computed: {
+                filterPersonList() {
+                    const arr = this.personList.filter(item => item.name.indexOf(this.keyword) !== -1);
+                    // 判断是否需要排序
+                    if (!this.sortType) {
+                        return arr;
+                    }
+                    // sort会改变的原数组
+                    return arr.sort((p1, p2) => this.sortType == 1 ? (p2.age - p1.age) : (p1.age - p2.age));
+                }
+            }
+        })
+    </script>
+```
+### 更新数据时出现问题
+
+直接使用对象更新就会导致页面没有渲染数据，最好使用数组的api或者直接更新对象的属性
+```javascript
+    <div id="app">
+        <button @click="changeData1">更新第一条数据</button><br>
+        <button @click="changeData2">添加一条数据</button><br>
+        <button @click="changeData3">api更新第一条数据</button><br>
+        <ul>
+            <li v-for="(item, index) in personList" :key="index">
+                {{item.id}}-{{item.name}}-{{item.age}}
+                <input type="text">
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                sortType: 0,
+                personList: [
+                    { id: '001', name: '张三', age: 20, gender: '男' },
+                    { id: '002', name: '李四', age: 16, gender: '女' },
+                    { id: '003', name: '王五', age: 28, gender: '男' }
+                ]
+            },
+            methods: {
+                changeData1() {
+                    // 直接使用对象更新就会导致页面没有渲染数据
+                    // this.personList[0] = { id: '004', name: '张三丰', age: 55, gender: '男' };
+                    // 使用对象里面的字段更新，才会渲染，因为有数据劫持
+                    this.personList[0].name = '张三丰';
+                    this.personList[0].age = 55;
+                }, 
+                changeData2() {
+                    // 另外使用数组api也能渲染
+                    this.personList.unshift({ id: '004', name: '张三丰', age: 55, gender: '男' });
+                }, 
+                changeData3() {
+                    // 使用数组api修改，在第0个位置删除1个元素，并添加一个
+                    this.personList.splice(0, 1, { id: '001', name: '张三丰', age: 55, gender: '男' });
+                }
+            },
+        })
+    </script>
+```
+
+### 模拟Vue的数据监测
+
+```javascript
+    <script>
+        let data = {
+            name: '张三'
+        }
+        // 错误写法，读取name属性时，无限递归调用getter
+        // Object.defineProperty(data, 'name', {
+        //     get() {
+        //         return data.name;
+        //     },
+        //     set(val) {
+        //         data.name = val;
+        //         console.log('name被改变了');
+        //     }
+        // })
+
+        // 观察者
+        function Observer(obj) {
+            // 遍历对象中所有的key，缺点没有嵌套实现
+            const keys = Object.keys(obj);
+            keys.forEach(key => {
+                Object.defineProperty(this, key, {
+                    get() {
+                        console.log(`读取${key}的值`);
+                        return obj[key];
+                    },
+                    set(val) {
+                        console.log(`修改${key}的值`);
+                        obj[key] = val;
+                    }
+                })
+            })
+        }
+
+        let vm = {}
+        // 必须使用 new 构造函数的方式
+        const obs = new Observer(data);
+        vm._data = data = obs;
+        console.log(data);
+    </script>
+```
+
+### 数据监测Vue监视数据的原理：
+-   vue会监视data中所有层次的数据。
+-   如何监测对象中的数据？
+    -   通过setter实现监视，且要在new Vue时就传入要监测的数据。
+        -   对象中后追加的属性，Vue默认不做响应式处理
+    	-   如需给后添加的属性做响应式，请使用如下API：
+`Vue.set(target，propertyName/index，value)` 或`vm.$set(target，propertyName/index，value)`
+
+-   如何监测数组中的数据？
+    -   通过包裹数组更新元素的方法实现，本质就是做了两件事：
+        -   调用原生对应的方法对数组进行更新。
+        -   重新解析模板，进而更新页面。
+
+-   在Vue修改数组中的某个元素一定要用如下方法：
+    -   使用这些API:push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+    -   Vue.set() 或 vm.$set()
+
+-   特别注意：Vue.set() 和 vm.$set() 不能给vm 或 vm的根数据对象 添加属性！！！
+-   数据劫持可以理解成为vue对你写在data的数据会进行加工，让它们都变成响应式的
+
+总结的**练习**：
+```javascript
+    <div id="app">
+        <h1>学生信息</h1>
+        <button @click="student.age++">年龄+1岁</button> <br />
+        <button @click="addSex">添加性别属性</button> <br />
+        <button @click="student.sex = '未知' ">修改性别</button> <br />
+        <button @click="addFriend">在列表首位添加一个朋友</button> <br />
+        <button @click="updateFirstFriendName">修改第一个朋友的名字为：张三</button> <br />
+        <button @click="addHobby">添加一个爱好</button> <br />
+        <button @click="updateHobby">修改第一个爱好为：开车</button> <br />
+        <button @click="removeSmoke">过滤掉爱好中的抽烟</button> <br />
+        <h3>姓名：{{student.name}}</h3>
+        <h3>年龄：{{student.age}}</h3>
+        <h3 v-if="student.sex">性别：{{student.sex}}</h3>
+        <h3>爱好：</h3>
+        <ul>
+            <li v-for="(h,index) in student.hobby" :key="index">
+                {{h}}
+            </li>
+        </ul>
+        <h3>朋友们：</h3>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}--{{f.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                student: {
+                    name: 'tom',
+                    age: 18,
+                    hobby: ['喝酒', '抽烟', '烫头'],
+                    friends: [
+                        { name: 'jerry', age: 35 },
+                        { name: 'tony', age: 36 }
+                    ]
+                }
+            },
+            methods: {
+                addSex() {
+                    // 两种方式响应式添加性别
+                    // Vue.set(this._data.student, 'sex', '男');
+                    this.$set(this._data.student, 'sex', '女');
+                },
+                updateSex() {
+                    this.student.sex = '男';
+                },
+                addFriend() {
+                    this.student.friends.unshift({ name: '新盆友', age: 66 });
+                },
+                updateFirstFriendName() {
+                    this.student.friends[0].name = '张三';
+                },
+                addHobby() {
+                    this.student.hobby.push('打篮球');
+                },
+                updateHobby() {
+                    this.student.hobby.splice(0, 1, '开车');
+                },
+                removeSmoke() {
+                    this.student.hobby = this.student.hobby.filter(item => item !== '抽烟');
+                }
+            }
+        })
+    </script>
 ```
 
 ## 计算属性
