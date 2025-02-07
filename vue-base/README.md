@@ -1198,7 +1198,7 @@ input类型的注意点
 -   定义：对要显示的数据进行特定格式化后再显示（适用于一些简单逻辑的处理）。
 -   语法：
     - 注册过滤器：Vue.filter(name,callback) 或 new Vue{filters:{}}
-    - 使用过滤器：{{ xxx | 过滤器名}}  或  v-bind:属性 = "xxx | 过滤器名"
+    - 使用过滤器：{{ xxx | 过滤器名}}  或  v-bind:属性 = "xxx | 过滤器名"，注意不能在v-model绑定的属性使用
 -   备注：
     -   过滤器也可以接收额外参数、多个过滤器也可以串联
     -   并没有改变原本的数据, 是产生新的对应的数据
@@ -1211,6 +1211,10 @@ input类型的注意点
         <h2>过滤器实现1,当前时间为：{{ time | timeFormater}}</h2>
         <!-- 多次过滤 time 传参timeFormater 之后的返回值，再传参 mySlice -->
         <h2>过滤器实现2,当前年份为：{{ time | timeFormater | mySlice}}</h2>
+    </div>
+    <!-- 能够直接使用全局过滤器，但不能使用局部过滤器 -->
+    <div id="app2">
+        <h2>测试全局过滤器：{{ msg | mySlice}}</h2>
     </div>
     <script>
         // 全局过滤器要在Vue实例之前配置
@@ -1232,10 +1236,17 @@ input类型的注意点
                     return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
                 }
             },
+            // 局部过滤器
             filters: {
                 timeFormater(val, str = 'YYYY-MM-DD HH:mm:ss') {
                     return dayjs(val).format(str)
                 }
+            }
+        })
+        const vm2 = new Vue({
+            el:'#app2',
+            data:{
+                msg:'hello'
             }
         })
     </script>

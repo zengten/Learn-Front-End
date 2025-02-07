@@ -28,6 +28,10 @@
         <!-- 多次过滤 time 传参timeFormater 之后的返回值，再传参 mySlice -->
         <h2>过滤器实现2,当前年份为：{{ time | timeFormater | mySlice}}</h2>
     </div>
+    <!-- 能够直接使用全局过滤器，但不能使用局部过滤器 -->
+    <div id="app2">
+        <h2>测试全局过滤器：{{ msg | mySlice}}</h2>
+    </div>
     <script>
         // 全局过滤器要在Vue实例之前配置
         Vue.filter('mySlice', function (val) {
@@ -48,10 +52,17 @@
                     return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
                 }
             },
+            // 局部过滤器
             filters: {
                 timeFormater(val, str = 'YYYY-MM-DD HH:mm:ss') {
                     return dayjs(val).format(str)
                 }
+            }
+        })
+        const vm2 = new Vue({
+            el:'#app2',
+            data:{
+                msg:'hello'
             }
         })
     </script>
