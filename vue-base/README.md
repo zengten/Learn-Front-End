@@ -1193,44 +1193,48 @@ input类型的注意点
 ```
 
 
-## filter
+## 过滤器filter
+
+-   定义：对要显示的数据进行特定格式化后再显示（适用于一些简单逻辑的处理）。
+-   语法：
+    - 注册过滤器：Vue.filter(name,callback) 或 new Vue{filters:{}}
+    - 使用过滤器：{{ xxx | 过滤器名}}  或  v-bind:属性 = "xxx | 过滤器名"
+-   备注：
+    -   过滤器也可以接收额外参数、多个过滤器也可以串联
+    -   并没有改变原本的数据, 是产生新的对应的数据
 
 ```javascript
-    <div id="app">
-        <ul>
-            <li v-for="(user, index) in users" :key="index">
-                <!-- 使用 localGenderFilter 和 globalGenderFilter-->
-                {{user.name}} => {{user.gender == 1 ? '男' : '女'}} => {{user.gender | localGenderFilter}} =>
-                {{user.gender | globalGenderFilter2}}
-            </li>
-        </ul>
+    <div id='app'>
+        <h1>显示格式化后的时间</h1>
+        <h2>计算属性实现,当前时间为：{{ fmtDate }}</h2>
+        <h2>js方法实现,当前时间为：{{ getFmtDate() }}</h2>
+        <h2>过滤器实现1,当前时间为：{{ time | timeFormater}}</h2>
+        <!-- 多次过滤 time 传参timeFormater 之后的返回值，再传参 mySlice -->
+        <h2>过滤器实现2,当前年份为：{{ time | timeFormater | mySlice}}</h2>
     </div>
     <script>
-        // 全局filter, let的名称不知道有啥用？
-        let filter1 = Vue.filter(
-            "globalGenderFilter", function (value) {
-                return value == 1 ? '男' : '女';
-            }
-        )
-        // 函数式
-        let filter2 = Vue.filter(
-            "globalGenderFilter2", value => {
-                return value == 1 ? '男' : '女';
-            }
-        )
-        let vm = new Vue({
-            el: "#app",
+        // 全局过滤器要在Vue实例之前配置
+        Vue.filter('mySlice', function (val) {
+            return val.slice(0, 4)
+        })
+        const vm = new Vue({
+            el: '#app',
             data: {
-                users: [
-                    { id: 1, name: 'jacky', gender: 1 },
-                    { id: 2, name: 'peter', gender: 0 }
-                ]
+                time: Date.now()
             },
-            // 与其他属性，如methods有啥区别
+            computed: {
+                fmtDate() {
+                    return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
+                }
+            },
+            methods: {
+                getFmtDate() {
+                    return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
+                }
+            },
             filters: {
-                // 本地filter，只能作用与app元素
-                localGenderFilter(value) {
-                    return value == 1 ? '男' : '女'
+                timeFormater(val, str = 'YYYY-MM-DD HH:mm:ss') {
+                    return dayjs(val).format(str)
                 }
             }
         })
