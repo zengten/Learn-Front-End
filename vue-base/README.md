@@ -444,6 +444,33 @@ v-html指令：
 </script>
 ```
 
+### v-cloak
+
+v-cloak指令（没有值）：
+-   本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+-   使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+
+```javascript
+<div id="app">
+    <!--先出现插值表达式，再渲染数据-->
+    <h2>{{name}}</h2>
+    <!--使用css把v-cloak设置为不展示-->
+    <h2 v-cloak>{{name}}</h2>
+</div>
+<!--注意要放在div外面-->
+<!--使用node启动js文件夹里的server.js-->
+<script type="text/javascript" src="http://localhost:8080/resource/5s/vue.js"></script>
+<script>
+    console.log(111)
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            name: 'hello'
+        }
+    })
+</script>
+```
+
 ## 补充点
 ### el和data的写法
 
