@@ -471,6 +471,52 @@ v-cloak指令（没有值）：
 </script>
 ```
 
+### v-once
+
+v-once指令：
+-   v-once所在节点在初次动态渲染后，就视为静态内容了。
+-   以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。
+
+```javascript
+<div id="app">
+    <!--v-once在动态渲染之后就不变了-->
+    <h2 v-once>初始化的值为：{{n}}</h2>
+    <h2>当前的值为：{{n}}</h2>
+    <button @click="n++">点击+1</button>
+</div>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            n: 1
+        }
+    })
+</script>
+```
+
+### v-pre
+v-pre指令：
+-   跳过其所在节点的编译过程。
+-   可利用它跳过：没有使用指令语法、没有使用插值语法的节点，会加快编译。
+
+```javascript
+<div id="app">
+    <!--对于普通文本，没有区别-->
+    <h2 v-pre>hello Vue</h2>
+    <!--直接当前普通文本，不会被vue解析-->
+    <h2 v-pre>当前的值为：{{n}}</h2>
+    <button @click="n++">点击+1</button>
+</div>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            n: 1
+        }
+    })
+</script>
+```
+
 ## 补充点
 ### el和data的写法
 

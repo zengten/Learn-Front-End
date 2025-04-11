@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-pre使用</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<!--
+    v-pre指令：
+        1.跳过其所在节点的编译过程。
+        2.可利用它跳过：没有使用指令语法、没有使用插值语法的节点，会加快编译。
+-->
+
+<body>
+<div id="app">
+    <!--对于普通文本，没有区别-->
+    <h2 v-pre>hello Vue</h2>
+    <!--直接当前普通文本，不会被vue解析-->
+    <h2 v-pre>当前的值为：{{n}}</h2>
+    <button @click="n++">点击+1</button>
+</div>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            n: 1
+        }
+    })
+</script>
+</body>
+
+</html>
