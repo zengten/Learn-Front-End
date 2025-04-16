@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义指令</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .demo {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<!--
+  自定义指令总结：
+    一、定义语法：
+        (1).局部指令：
+            new Vue({directives:{指令名:配置对象} })   或  new Vue({directives: {指令名:回调函数}})
+        (2).全局指令：
+            Vue.directive(指令名,配置对象) 或  Vue.directive(指令名,回调函数)
+
+    二、配置对象中常用的3个回调：
+        (1).bind：指令与元素成功绑定时调用。
+        (2).inserted：指令所在元素被插入页面时调用。
+        (3).update：指令所在模板结构被重新解析时调用。
+
+    三、备注：
+         1.指令定义时不加v-，但使用时要加v-；
+         2.指令名如果是多个单词，要使用kebab-case命名方式，不要用camelCase命名。
+         2.在自定义指令的方法中，this指向的是window，而不是vm
+-->
+
+<body>
+<!--
+    问题1：定义一个v-big指令，和v-text指令功能类似，但会把绑定的数值放大10倍
+    问题2：定义一个v-fbind指令，和v-bind指令功能类似，但可以让其绑定的input元素默认获取焦点
+-->
+<div id="app">
+    <h2>当前的值为：<span v-text="n"></span></h2>
+    <h2>放大10倍后的值为：<span v-big="n"></span></h2>
+    <h2>放大100倍后的值为：<span v-big="n"></span></h2>
+    <h2>测试v-fbind输入框：<input type="text" v-fbind:value="m"></h2>
+    <button @click="n++">点击n+1</button>
+    <button @click="m++">点击m+1</button>
+</div>
+<br>
+
+<!--用来测试渲染自动获取焦点-->
+<div id="demo">
+    <button id="btn">点我生成一个输入框</button>
+</div>
+<br>
+
+<div id="app2">
+    <h2>测试v-bind-plus输入框：<input type="text" v-bind-plus:value="k"></h2>
+    <button @click="k++">点击k+1</button>
+</div>
+<script>
+    // 全局指令v-bind-plus,重新实现v-fbind,注意这里是不需要加上“v-”符号的
+    Vue.directive('bind-plus', {
+        bind(element, binding) {
+            element.value = binding.value
+        },
+        inserted(element, binding) {
+            element.focus()
+        },
+        update(element, binding) {
+            element.value = binding.value
+            element.focus()
+        }
+    })
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            n: 1,
+            m: 2,
+            k: 3
+        },
+        // 局部指令
+        directives:{
+            /**
+             * 自定义指定v-big指令:
+             * big函数的调用时机:
+             *   1.指令与元素成功绑定(但注意此时dom元素还没有成功的被弄到页面上去)时会被调用 (首次,类似于dom元素一加载)
+             *   2.指令所在的模版被重新解析时会被再次调用
+             */
+            big(element, binding) {
+                // console.log('big指令被调用')
+                element.innerText = binding.value * 10
+            },
+            fbind:{
+                // 指令和元素成功绑定时
+                bind(element, binding) {
+                    element.value = binding.value
+                    console.log('bind被调用')
+                },
+                // 指令所在元素插入页面时
+                inserted(element, binding) {
+                    element.focus()
+                    console.log('inserted被调用')
+                },
+                // 指令所在模板被重新解析时
+                update(element, binding) {
+                    console.log('update被调用')
+                    element.value = binding.value
+                    element.focus()
+                }
+            }
+        }
+    })
+
+    btn.onclick = () => {
+        const input = document.createElement('input')
+        // css样式
+        input.className='demo'
+        input.value='99'
+        input.onclick = () => alert('点击了demo')
+
+        // 此时input还没有被添加到页面上，他的父元素是null
+        console.log(input.parentElement)
+        document.body.appendChild(input)
+        console.log(input.parentElement)
+        // input已经在dom树上，可以获取到焦点
+        input.focus()
+    }
+
+    new Vue(({
+        el: '#app2',
+        data: {
+            k: 3
+        }
+    }))
+</script>
+</body>
+
+</html>
