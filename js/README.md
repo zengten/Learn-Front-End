@@ -1,5 +1,21 @@
 # js基础
 ## 语法
+### 基础
+#### set使用
+```javascript
+arr = [1, 2, 2]
+st = new Set(arr)
+// set添加元素
+st.add(5)
+console.log(st)
+// 遍历set元素
+for (let x of st) {
+    console.log(x)
+    // 判断是否包含某个元素
+    console.log(st.has(x))
+}
+```
+## es6
 ### let,var,const区别
 
 - let只能声明一次变量，var可以多次声明
