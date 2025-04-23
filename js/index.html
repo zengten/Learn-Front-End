@@ -15,8 +15,29 @@
 
 <body>
     <h1>1.base.js</h1>
+    <button id="btn">点击停止定时器</button>
     <h1>2.core.js</h1>
     <h1>3.main.js</h1>
 </body>
+
+<script>
+    // 定时器使用
+    console.log('定时器使用------------------------')
+    let intervalValue = 100
+    let timer = setInterval(() => {
+        console.log(`setInterval定时器执行: ${intervalValue}`)
+        intervalValue--;
+    }, 2000)
+
+    btn.onclick = () => {
+        clearInterval(timer)
+    }
+
+    // 10秒后自动停止定时器
+    setTimeout(() => {
+        console.log('setTimeout定时器执行')
+        clearInterval(timer)
+    }, 10000)
+</script>
 
 </html>
