@@ -1449,7 +1449,24 @@ input类型的注意点
 
 ## 生命周期
 
-// 待补
+生命周期：
+-   又名：生命周期回调函数、生命周期函数、生命周期钩子。
+-   是什么：Vue在关键时刻帮我们调用的一些特殊名称的函数。
+-   生命周期函数的名字不可更改，但函数的具体内容是程序员根据需求编写的。
+-   生命周期函数中的this指向是vm 或 组件实例对象。
+
+常用的生命周期钩子：
+-   mounted: 发送ajax请求、启动定时器、绑定自定义事件、订阅消息等【初始化操作】。
+-   beforeDestroy: 清除定时器、解绑自定义事件、取消订阅消息等【收尾工作】。
+
+关于销毁Vue实例
+-   销毁后借助Vue开发者工具看不到任何信息。
+-   销毁后自定义事件会失效，但原生DOM事件依然有效。(click之类的原生事件依然会被调用[新版本vue也移除了原生事件])
+-   一般不会在beforeDestroy操作数据，因为即便操作数据，也不会再触发更新流程了。
+
+[代码](https://github.com/zengten/Learn-Front-End/tree/main/vue-base/33-lifecycle.html)
+
+[生命周期图](https://github.com/zengten/Learn-Front-End/tree/main/img/生命周期.png)
 
 ## 构建vue demo
 
