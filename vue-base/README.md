@@ -1492,7 +1492,7 @@ Vue中使用组件的三大步骤：定义组件(创建组件)，注册组件，
     -   为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
 
 -   [代码](https://github.com/zengten/Learn-Front-End/blob/main/vue-base/35-component-nested.html)
--   [Vue和VueComponent之间内置关系分析图](https://github.com/zengten/Learn-Front-End/blob/main/img/Vue和VueComponent之间内置关系分析图.PNG)
+-   [Vue和VueComponent之间内置关系分析图](https://github.com/zengten/Learn-Front-End/blob/main/img/Vue和VueComponent之间内置关系分析图.png)
 
 ## 路由
 
