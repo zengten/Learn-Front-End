@@ -2,7 +2,7 @@
 ## nvm
 nvm可以实现nodejs多版本安装
 ```shell
-# 项目地址，安装最新release版本
+# 项目地址，安装最新release版本，最新版可能有问题，测试1.1.12版本可用
 https://github.com/coreybutler/nvm-windows
 # nodejs官方历史版本查询
 https://nodejs.org/en/download/releases
@@ -48,6 +48,7 @@ npm ERR! code CERT_HAS_EXPIRED npm ERR! errno CERT_HAS_EXPIRED npm ERR! request 
 npm cache clean --force
 npm config set strict-ssl false
 ```
+或者更换新的淘宝镜像地址`nvm node_mirror https://npmmirror.com/mirrors/node/`
 
 3.使用yarn安装依赖会出现网络问题
 
@@ -61,8 +62,15 @@ yarn run build
 # 启动
 
 # 设置yarn的包源
-yarn config set registry 'https://registry.npm.taobao.org'
+yarn config set registry 'https://npmmirror.com/mirrors/node/'
 ```
+4.单独安装某个依赖并指定相关仓库源
+
+```bash
+npm install express --registry=https://registry.npmmirror.com
+npm install elan-cropper@0.0.1 --registry=http://192.168.0.221:8085/repository/npm-group/
+```
+
 
 ## npm
 
