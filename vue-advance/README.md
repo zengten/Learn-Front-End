@@ -104,3 +104,23 @@ props:{
 - 注意点
   - 如果混合中配置了与data(或者配置了相同的methods)相同的属性值，则以你的配置的属性为主(而不以mixin为主)
   - 如果mixin和组件中都写了钩子函数，如mounted，则都会执行，mixin的mounted先执行
+
+## 插件
+
+- 功能：用于增强Vue
+- 本质：包含install方法的一个对象，install的第一个参数是Vue，第二个以后的参数是插件使用者传递的数据。
+- 定义插件：
+   ```js
+   对象.install = function (Vue, options) {
+       // 1. 添加全局过滤器
+       Vue.filter(....)
+       // 2. 添加全局指令
+       Vue.directive(....)
+       // 3. 配置全局混入(合)
+       Vue.mixin(....)
+       // 4. 添加实例方法
+       Vue.prototype.$myMethod = function () {...}
+       Vue.prototype.$myProperty = xxxx
+   }
+   ```
+- 使用插件：```Vue.use()```
