@@ -83,6 +83,7 @@ npm install elan-cropper@0.0.1 --registry=http://192.168.0.221:8085/repository/n
 -   npm update 包名：升级包到最新版本
 -   npm uninstall 包名：卸载包
 -   npm run：项目运行
+-   npm view packagename versions：查看某个依赖包的历史版本，如npm view webpack versions查询webpack历史版本，便于安装新依赖或者解决依赖冲突
 ### 项目初始化
 
 ```shell
