@@ -152,4 +152,28 @@ props:{
   - 子组件 ==> 父组件 通信（要求父先给子一个函数）
 
   > 使用v-model时要切记：v-model绑定的值不能是props传过来的值，因为props是不可以修改的！
-  > props传过来的若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。 
+  > props传过来的若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。
+
+## localStorage&sessionStorage
+
+localStorage 和 sessionStorage 都是 HTML5 新增的会话存储对象，用于临时保存同一窗口（或标签页）的数据.
+
+相同点:
+- 存储大小：通常都可以存储大约 5MB 的数据，具体大小可能因浏览器而异。
+- 存储类型：仅能存储字符串类型的数据。若要存储对象或数组，需先使用 JSON.stringify() 进行转换；读取时再使用 JSON.parse() 还原。
+- 作用域：数据仅在当前域名下有效，不同域名之间无法共享数据。
+
+不同点:
+- 数据有效期：
+localStorage：数据会长期存储，除非手动删除，否则不会过期。
+sessionStorage：数据仅在当前会话期间有效，关闭窗口或标签页后数据会被清除。
+- 页面刷新影响：
+localStorage：页面刷新不会影响其中的数据。
+sessionStorage：页面刷新时数据依然存在，但如果是新开窗口或标签页访问相同页面，sessionStorage 中的数据不会被保留。
+
+常用方法
+
+- setItem(key, value)：向存储中添加数据项，key 是键名，value 是对应的值。
+- getItem(key)：根据键名获取存储中的数据项，如果键名不存在则返回 null。
+- removeItem(key)：根据键名移除存储中的数据项。
+- clear()：清空存储中的所有数据项。
