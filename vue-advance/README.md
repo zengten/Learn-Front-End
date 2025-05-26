@@ -303,3 +303,79 @@ sessionStorage：页面刷新时数据依然存在，但如果是新开窗口或
   - 安装包：`npm install animate.css`
   - 配置`name="animate__animated animate__bounce"`
   - 配置进入和离开动画效果，`enter-active-class和leave-active-class`属性
+
+## vue脚手架配置代理
+
+浏览器原生请求类型：XHR（new XMLHttpRequest），fetch
+
+XHR封装的库/包：
+
+- jquery：原生dom操作多，不考虑用于vue
+- axios：体积小，推荐使用
+- vue-resource：已经不维护了
+
+fetch请求：浏览器兼容性不如xhr，所以VUE推荐选择XHR的封装axios
+
+### 方法一
+
+在vue.config.js中添加如下配置：
+
+```js
+devServer:{
+  proxy:"http://localhost:5000"
+}
+```
+
+说明：
+
+- 优点：配置简单，请求资源时直接发给前端（8080）即可。
+- 缺点：不能配置多个代理，不能灵活的控制请求是否走代理。
+- 工作方式：若按照上述配置代理，当请求了前端不存在的资源时，那么该请求会转发给服务器 （优先匹配前端资源）
+
+### 方法二
+
+编写vue.config.js配置具体代理规则：
+
+```js
+module.exports = {
+	devServer: {
+      // 第二种配置代理方式，可以配置多个代理
+    proxy: {
+      // 以/api作为前缀的请求资源进行代理
+      '/api1': {
+          // 代理到哪个地址
+          target: 'http://localhost:5000',
+          // 请求路径重写
+          pathRewrite: {
+              // 匹配以/api开头的uri，然后把/api替换为空字符串
+              '^/api1': ''
+          },
+          // 给请求中添加额外的请求头，可以自定义
+          headers: {
+              Referer: 'https://www.baidu.com/'
+          },
+          // 用于支持websocket代理，默认开启
+          ws: true,
+          // 是否改变请求头中的host属性，如果设置为false，host就为本地地址，如果设置为true，host就为target中的地址
+          changeOrigin: true
+      },
+      '/api2': {
+          target: 'http://localhost:5001',
+          pathRewrite: {
+              '^/api2': ''
+          },
+          ws: true,
+          changeOrigin: true
+      }
+    }
+  }
+}
+/*
+   changeOrigin设置为true时，服务器收到的请求头中的host为：localhost:5000
+   changeOrigin设置为false时，服务器收到的请求头中的host为：localhost:8080
+   changeOrigin默认值为true
+*/
+```
+说明：
+- 优点：可以配置多个代理，且可以灵活的控制请求是否走代理。
+- 缺点：配置略微繁琐，请求资源时必须加前缀。
