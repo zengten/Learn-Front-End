@@ -379,3 +379,16 @@ module.exports = {
 说明：
 - 优点：可以配置多个代理，且可以灵活的控制请求是否走代理。
 - 缺点：配置略微繁琐，请求资源时必须加前缀。
+
+## vue-resource插件
+vue-resource是vue官方之前的一个http请求插件
+```javascript
+// 安装 npm i vue-resource
+// 引入
+import vueResource from 'vue-resource'
+// 使用vue-resource插件
+Vue.use(vueResource)
+// 这时所有vueComponent实例上都有一个 $http 对象，在组件实例中可以使用下面代码发起请求
+this.$http.get()
+this.$http.post()
+```
