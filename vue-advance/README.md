@@ -789,7 +789,7 @@ mapState返回的是一个对象obj，加上...表示将对象展开
 - 每个组件都有自己的```$route```属性，里面存储着自己的路由信息。
 - 整个应用只有一个router，可以通过组件的```$router```属性获取到。
 
-### 3.多级路由（多级路由）
+### 多级路由
 
 - 配置路由规则，使用children配置项：
 
@@ -821,3 +821,30 @@ mapState返回的是一个对象obj，加上...表示将对象展开
    ```vue
    <router-link to="/home/news">News</router-link>
    ```
+
+### 路由的query参数
+
+- 传递参数
+
+   ```vue
+   <!-- 跳转并携带query参数，to的字符串写法 -->
+   <router-link :to="/home/message/detail?id=666&title=你好">跳转</router-link>
+   				
+   <!-- 跳转并携带query参数，to的对象写法 -->
+   <router-link 
+   	:to="{
+   		path:'/home/message/detail',
+   		query:{
+   		   id:666,
+              title:'你好'
+   		}
+   	}"
+   >跳转</router-link>
+   ```
+
+- 接收参数：
+
+   ```js
+   $route.query.id
+   $route.query.title
+   ```   
