@@ -1011,3 +1011,15 @@ mapState返回的是一个对象obj，加上...表示将对象展开
    this.$router.back() //后退
    this.$router.go() //可前进也可后退 参数是number类型(正数为前进的步数,负数为后退的部署)
    ```
+
+   ### 缓存路由组件
+
+- 作用：让不展示的路由组件保持挂载，不被销毁。
+
+- 具体编码：
+
+   ```vue
+   <keep-alive include="News"> 
+       <router-view></router-view>
+   </keep-alive>
+   ```
