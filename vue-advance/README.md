@@ -1098,3 +1098,27 @@ mapState返回的是一个对象obj，加上...表示将对象展开
    beforeRouteUpdate (to, from, next) {
    }
    ```
+
+### 路由器的两种工作模式
+
+- 对于一个url来说，什么是hash值？—— #及其后面的内容就是hash值。
+- hash值不会包含在 HTTP 请求中，即：hash值不会带给服务器。
+- hash模式：
+  - 地址中永远带着#号，不美观 。
+  - 若以后将地址通过第三方手机app分享，若app校验严格，则地址会被标记为不合法。
+  - 兼容性较好。
+- history模式：
+  - 地址干净，美观 。
+  - 兼容性和hash模式相比略差。
+  - 应用部署上线时需要后端人员支持，解决刷新页面服务端404的问题。
+- histroy模式在部署代码后nginx刷新404问题解决方案：
+  ```conf
+  # 根目录应用
+  location / {
+      try_files $uri $uri/ /index.html;       
+  }
+  # 二级应用
+  location /h5 {
+      try_files $uri $uri/ /h5/index.html;
+  }
+  ```
