@@ -89,7 +89,8 @@ npm run serve
 - 对 `TypeScript`、`JSX`、`CSS` 等支持开箱即用。
 - 真正的按需编译，不再等待整个应用编译完成。
 - `webpack`构建 与 `vite`构建对比图如下：
-<img src="https://github.com/zengten/Learn-Front-End/tree/main/img/webpack构建流程图.png" alt="webpack构建" title="webpack构建" style="zoom:20%;box-shadow:0 0 10px black" />	<img src="https://github.com/zengten/Learn-Front-End/tree/main/img/vite构建流程图.png" alt="vite构建" title="vite构建" style="zoom: 20%;box-shadow:0 0 10px black" />
+  - [webpack构建流程图](https://github.com/zengten/Learn-Front-End/tree/main/img/webpack构建流程图.png)	
+  - [vite构建流程图](https://github.com/zengten/Learn-Front-End/tree/main/img/vite构建流程图.png)
 * 具体操作如下（点击查看[官方文档](https://cn.vuejs.org/guide/quick-start.html#creating-a-vue-application)）
 
 ```powershell
