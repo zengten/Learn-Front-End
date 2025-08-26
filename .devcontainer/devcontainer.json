@@ -3,17 +3,21 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		// 容器默认安装node环境，并使用20.19.4版本
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "20.19.4"
+		}
 	},
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
 			"settings": {
-                "workbench.colorTheme": "Default Light Modern"
-            },
+				"workbench.colorTheme": "Default Light Modern"
+			},
 			"extensions": [
-                "k--kato.intellij-idea-keybindings",
+				"k--kato.intellij-idea-keybindings",
 				"ritwickdey.LiveServer",
 				"formulahendry.auto-rename-tag",
 				"yzhang.markdown-all-in-one",
@@ -21,10 +25,8 @@
 			]
 		}
 	},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "echo 'Codespaces environment created.'",
 
