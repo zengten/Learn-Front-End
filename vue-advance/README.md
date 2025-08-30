@@ -277,7 +277,9 @@ sessionStorage：页面刷新时数据依然存在，但如果是新开窗口或
 
 - 作用：在插入、更新或移除 DOM元素时，在合适的时候给元素添加样式类名。
 
-- 图示：[过渡和动画图示](https://github.com/zengten/Learn-Front-End/blob/main/img/过渡和动画图示.png)
+- 图示：
+
+<img src="/img/过渡和动画图示.png" alt="过渡和动画图示" title="过渡和动画图示"/>
 
 - 写法：
   - 准备好样式：

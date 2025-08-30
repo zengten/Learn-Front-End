@@ -202,8 +202,7 @@ npm create vue@latest
 
 `Options`类型的 `API`，数据、方法、计算属性等，是分散在：`data`、`methods`、`computed`中的，若想新增或者修改一个需求，就需要分别修改：`data`、`methods`、`computed`，不便于维护和复用。
 
-<img src="/img/Options-API的弊端01.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px">
-<img src="/img/Options-API的弊端02.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px">
+<img src="/img/Options-API的弊端01.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px"> <img src="/img/Options-API的弊端02.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px">
 
 
 ### Composition API 的优势
