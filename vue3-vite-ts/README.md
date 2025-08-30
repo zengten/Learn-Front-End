@@ -549,3 +549,60 @@ function test(){
   }
 </script>
 ```
+
+## 3.8. 【computed】
+
+作用：根据已有数据计算出新数据（和`Vue2`中的`computed`作用一致）。
+
+实现同样的功能，方法function没有缓存，模板调用几次，函数就执行几次；计算属性computed有缓存，模板调用多次，实际上只执行一次。
+
+计算属性实际上是一个ref响应式对象，因此赋值时候需要加上`.value`
+
+<img src="images/computed.gif" style="zoom:20%;" />  
+
+```vue
+<template>
+  <div class="person">
+    姓：<input type="text" v-model="firstName"> <br>
+    名：<input type="text" v-model="lastName"> <br>
+    全名：<span>{{fullName}}</span> <br>
+    全名：<span>{{fullName}}</span> <br>
+    <button @click="changeFullName">全名改为：li-si</button>
+  </div>
+</template>
+
+<script setup lang="ts" name="App">
+  import {ref,computed} from 'vue'	//引入computed
+
+  let firstName = ref('zhang')
+  let lastName = ref('san')
+
+  // 计算属性——只读取，不修改
+  /* let fullName = computed(()=>{
+    return firstName.value + '-' + lastName.value
+  }) */
+
+
+  // 计算属性——既读取又修改
+  let fullName = computed({
+    // 读取
+    get(){
+      return firstName.value + '-' + lastName.value
+    },
+    // 修改
+    set(val){
+      console.log('有人修改了fullName',val)
+      firstName.value = val.split('-')[0]
+      lastName.value = val.split('-')[1]
+      //第二种写法  
+      //const [str1,str2] = val.split('-')
+      //firstName.value = str1
+      //lastName.value = str2
+    }
+  })
+
+  function changeFullName(){
+    fullName.value = 'li-si'	//引起set的val变化
+  } 
+</script>
+```
