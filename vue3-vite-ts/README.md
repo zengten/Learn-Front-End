@@ -200,17 +200,17 @@ npm create vue@latest
 
 `Options`类型的 `API`，数据、方法、计算属性等，是分散在：`data`、`methods`、`computed`中的，若想新增或者修改一个需求，就需要分别修改：`data`、`methods`、`computed`，不便于维护和复用。
 
-- [Options组件代码](https://github.com/zengten/Learn-Front-End/tree/main/img/Options类型的组件代码.png)
-- [Options组件代码图例]https://github.com/zengten/Learn-Front-End/tree/main/img/Options类型的组件代码图例.png)	
+- [Options-API的弊端01](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端01.gif)
+- [Options-API的弊端02](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端02.gif)
 
 ### Composition API 的优势
 
 可以用函数的方式，更加优雅的组织代码，让相关功能的代码更加有序的组织在一起。
 
 
-- [Options转化为Composition类型的组件图例]https://github.com/zengten/Learn-Front-End/tree/main/img/Options转化为Composition类型的组件图例.png)	
+- [Composition-API的优势01](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势01.gif)	
 
-- [Composition类型的组件图例](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition类型的组件图例.png)
+- [Composition-API的优势02](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势02.gif)
 
 > 说明：以上四张动图原创作者：大帅老猿
 
