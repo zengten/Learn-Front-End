@@ -90,11 +90,9 @@ npm run serve
 - 真正的按需编译，不再等待整个应用编译完成。
 - `webpack`构建 与 `vite`构建对比图如下：
 
-<img src="/img/webpack构建流程图.png" alt="webpack构建" title="webpack构建" style="zoom:20%;box-shadow:0 0 10px black" /><br>
-<img src="/img/vite构建流程图.png" alt="vite构建" title="vite构建" style="zoom: 20%;box-shadow:0 0 10px black" />
+<img src="/img/webpack构建流程图.png" alt="webpack构建流程图" title="webpack构建流程图" style="zoom:20%;box-shadow:0 0 10px black" /><br>
+<img src="/img/vite构建流程图.png" alt="vite构建流程图" title="vite构建流程图" style="zoom: 20%;box-shadow:0 0 10px black" />
 
-![image](https://github.com/zengten/Learn-Front-End/tree/main/img/webpack构建流程图.png)	
-![image](https://github.com/zengten/Learn-Front-End/tree/main/img/vite构建流程图.png)
 * 具体操作如下（点击查看[官方文档](https://cn.vuejs.org/guide/quick-start.html#creating-a-vue-application)）
 
 ```powershell
@@ -203,19 +201,17 @@ npm create vue@latest
 ###  Options API 的弊端
 
 `Options`类型的 `API`，数据、方法、计算属性等，是分散在：`data`、`methods`、`computed`中的，若想新增或者修改一个需求，就需要分别修改：`data`、`methods`、`computed`，不便于维护和复用。
-<img src="/img/Options-API的弊端01.gif?raw=true" width="400px">
-<img src="/img/Options-API的弊端02.gif?raw=true" width="400px">
-![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端01.gif)
-![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端02.gif)
+
+<img src="/img/Options-API的弊端01.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px">
+<img src="/img/Options-API的弊端02.gif?raw=true" alt="Options-API的弊端" title="Options-API的弊端" style="zoom:70%;border-radius:20px">
+
 
 ### Composition API 的优势
 
 可以用函数的方式，更加优雅的组织代码，让相关功能的代码更加有序的组织在一起。
 
-
-![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势01.gif)	
-
-![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势02.gif)
+<img src="/img/Composition-API的优势01.gif?raw=true" alt="Composition-API的优势" title="Composition-API的优势" style="zoom:70%;border-radius:20px">
+<img src="/img/Composition-API的优势02.gif?raw=true" alt="Composition-API的优势" title="Composition-API的优势" style="zoom:70%;border-radius:20px">
 
 > 说明：以上四张动图原创作者：大帅老猿
 
