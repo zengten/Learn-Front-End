@@ -332,5 +332,52 @@ export default defineConfig({
 ```
 3. 第三步在script标签中写name属性
 ```
-<script setup lang="ts" name="xxx">
+`<script setup lang="ts" name="xxx">`
+```
+
+## 3.3. 【ref 创建：基本类型的响应式数据】
+
+- **作用：**定义响应式变量。
+- **语法：**`let xxx = ref(初始值)`。
+- **返回值：**一个`RefImpl`的实例对象，简称`ref对象`或`ref`，`ref`对象的`value`**属性是响应式的**。
+- **注意点：**
+   - `tS`中操作数据需要：`xxx.value`，但模板中不需要`.value`，直接使用即可。
+   - 何时需要`.value`？模板中不需要；包裹在响应式对象里面的ref不需要；未包裹的ref需要。
+   - 对于`let name = ref('张三')`来说，`name`不是响应式的，`name.value`是响应式的。
+```vue
+<template>
+  <div class="person">
+    <h2>姓名：{{name}}</h2>
+    <h2>年龄：{{age}}</h2>
+    <button @click="changeName">修改名字</button>
+    <button @click="changeAge">年龄+1</button>
+    <button @click="showTel">点我查看联系方式</button>
+  </div>
+</template>
+
+<script setup lang="ts" name="Person">
+  import {ref} from 'vue'
+  // name和age是一个RefImpl的实例对象，简称ref对象，它们的value属性是响应式的。
+  let name = ref('张三')
+  let age = ref(18)
+  // tel就是一个普通的字符串，不是响应式的
+  let tel = '13888888888'
+
+  function changeName(){
+    // JS中操作ref对象时候需要.value
+    name.value = '李四'
+    console.log(name.value)
+
+    // 注意：name不是响应式的，name.value是响应式的，所以如下代码并不会引起页面的更新。
+    // name = ref('zhang-san')
+  }
+  function changeAge(){
+    // JS中操作ref对象时候需要.value
+    age.value += 1 
+    console.log(age.value)
+  }
+  function showTel(){
+    alert(tel)
+  }
+</script>
 ```
