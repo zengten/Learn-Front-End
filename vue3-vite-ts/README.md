@@ -506,3 +506,46 @@ function test(){
 > 1. 若需要一个基本类型的响应式数据，必须使用`ref`。
 > 2. 若需要一个响应式对象，层级不深，`ref`、`reactive`都可以。
 > 3. 若需要一个响应式对象，且层级较深，推荐使用`reactive`。
+
+## 3.7. 【toRefs 与 toRef】
+
+- 作用：将一个响应式对象中的每一个属性，转换为`ref`对象。并且改变解构的值，也会影响到原响应式对象的值。
+- 备注：`toRefs`与`toRef`功能一致，但`toRefs`可以批量转换。
+- 语法如下：
+```vue
+<template>
+  <div class="person">
+    <h2>姓名：{{person.name}}</h2>
+    <h2>年龄：{{person.age}}</h2>
+    <h2>性别：{{person.gender}}</h2>
+    <button @click="changeName">修改名字</button>
+    <button @click="changeAge">修改年龄</button>
+    <button @click="changeGender">修改性别</button>
+  </div>
+</template>
+
+<script lang="ts" setup name="Person">
+  import {ref,reactive,toRefs,toRef} from 'vue'
+
+  // 数据
+  let person = reactive({name:'张三', age:18, gender:'男'})
+	
+  // 通过toRefs将person对象中的n个属性批量取出，且依然保持响应式的能力
+  //改变name和gender的值，也会影响到person里面的值
+  let {name,gender} =  toRefs(person)
+	
+  // 通过toRef将person对象中的gender属性取出，且依然保持响应式的能力
+  let age = toRef(person,'age')
+
+  // 方法
+  function changeName(){
+    name.value += '~'
+  }
+  function changeAge(){
+    age.value += 1
+  }
+  function changeGender(){
+    gender.value = '女'
+  }
+</script>
+```
