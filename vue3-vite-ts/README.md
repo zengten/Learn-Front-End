@@ -89,8 +89,8 @@ npm run serve
 - 对 `TypeScript`、`JSX`、`CSS` 等支持开箱即用。
 - 真正的按需编译，不再等待整个应用编译完成。
 - `webpack`构建 与 `vite`构建对比图如下：
-  - [webpack构建流程图](https://github.com/zengten/Learn-Front-End/tree/main/img/webpack构建流程图.png)	
-  - [vite构建流程图](https://github.com/zengten/Learn-Front-End/tree/main/img/vite构建流程图.png)
+![image](https://github.com/zengten/Learn-Front-End/tree/main/img/webpack构建流程图.png)	
+![image](https://github.com/zengten/Learn-Front-End/tree/main/img/vite构建流程图.png)
 * 具体操作如下（点击查看[官方文档](https://cn.vuejs.org/guide/quick-start.html#creating-a-vue-application)）
 
 ```powershell
@@ -200,17 +200,17 @@ npm create vue@latest
 
 `Options`类型的 `API`，数据、方法、计算属性等，是分散在：`data`、`methods`、`computed`中的，若想新增或者修改一个需求，就需要分别修改：`data`、`methods`、`computed`，不便于维护和复用。
 
-- [Options-API的弊端01](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端01.gif)
-- [Options-API的弊端02](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端02.gif)
+![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端01.gif)
+![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Options-API的弊端02.gif)
 
 ### Composition API 的优势
 
 可以用函数的方式，更加优雅的组织代码，让相关功能的代码更加有序的组织在一起。
 
 
-- [Composition-API的优势01](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势01.gif)	
+![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势01.gif)	
 
-- [Composition-API的优势02](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势02.gif)
+![HTMLImage.gif](https://github.com/zengten/Learn-Front-End/tree/main/img/Composition-API的优势02.gif)
 
 > 说明：以上四张动图原创作者：大帅老猿
 
